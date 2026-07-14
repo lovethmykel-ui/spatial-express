@@ -18,14 +18,22 @@ export default function MobileNav({ onLoginRequest }: MobileNavProps) {
 
   const [isMenuOpen, setIsMenuOpen] = useState(false)
 
-  const tabs = [
+  type TabItem = {
+    id: string;
+    icon: any;
+    portal?: string;
+    view?: string;
+    action?: string;
+    isCenter?: boolean;
+  };
+
+  const tabs: TabItem[] = [
     { id: 'home', portal: 'public', view: 'home', icon: GlobeIcon },
     { id: 'calculator', portal: 'public', view: 'calculator', icon: CalculatorIcon },
     { id: 'track', portal: 'public', view: 'tracking', icon: MapPinIcon, isCenter: true },
     { id: 'menu', action: 'toggleMenu', icon: MenuIcon },
     { id: 'account', portal: 'customer', view: 'dashboard', icon: UserIcon }
-  ] as const
-
+  ]
   const menuLinks = [
     { label: 'Home', view: 'home', portal: 'public', icon: GlobeIcon },
     { label: 'Services', view: 'services', portal: 'public', icon: BriefcaseIcon },
@@ -95,8 +103,8 @@ export default function MobileNav({ onLoginRequest }: MobileNavProps) {
                 onClick={() => {
                   if (activePortal === 'public' && tab.portal !== 'public') {
                     onLoginRequest?.()
-                  } else {
-                    setActivePortal(tab.portal)
+                  } else if (tab.portal && tab.view) {
+                    setActivePortal(tab.portal as any)
                     setActiveView(tab.view)
                   }
                 }}
