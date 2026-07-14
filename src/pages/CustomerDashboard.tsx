@@ -1,5 +1,7 @@
-import React, { useState } from 'react'
+import React, { useState, useEffect } from 'react'
 import { motion, AnimatePresence, Variants } from 'framer-motion'
+import jsPDF from 'jspdf'
+import html2canvas from 'html2canvas'
 
 const containerVariants: Variants = {
   hidden: { opacity: 0 },
@@ -56,6 +58,10 @@ export default function CustomerDashboard() {
   const [newTicketMessage, setNewTicketMessage] = useState('')
   const [showNewTicketModal, setShowNewTicketModal] = useState(false)
 
+  // PDF Generation State
+  const [printingShipment, setPrintingShipment] = useState<any>(null)
+  const [isGeneratingPdf, setIsGeneratingPdf] = useState(false)
+
   // Shipment History filter state
   const [historySearch, setHistorySearch] = useState('')
 
@@ -105,10 +111,67 @@ export default function CustomerDashboard() {
     document.body.removeChild(link)
   }
 
-  // Export PDF mock trigger
-  const triggerPdfExport = () => {
-    alert("Exporting shipments manifest ledger as PDF report. Download will start shortly.")
+  // Export PDF mock trigger (Ledger)
+  const triggerPdfExport = async () => {
+    setIsGeneratingPdf(true)
+    try {
+      const doc = new jsPDF()
+      doc.text("Spatial Express - Package Ledger", 14, 20)
+      doc.setFontSize(10)
+      doc.text(`Generated on: ${new Date().toLocaleDateString()}`, 14, 30)
+      
+      let yPos = 40
+      shipments.forEach((s, idx) => {
+        if (yPos > 280) {
+          doc.addPage()
+          yPos = 20
+        }
+        doc.text(`${idx + 1}. ${s.id} | ${s.origin} to ${s.destination} | ${s.status} | ${s.cost} NGN`, 14, yPos)
+        yPos += 10
+      })
+      
+      doc.save("spatial_express_ledger.pdf")
+    } catch (e) {
+      console.error(e)
+    } finally {
+      setIsGeneratingPdf(false)
+    }
   }
+
+  // Generate Individual Receipt
+  const generateInvoicePdf = (shipment: any) => {
+    setPrintingShipment(shipment)
+    setIsGeneratingPdf(true)
+  }
+
+  // Effect to capture the template once it renders with the specific shipment
+  useEffect(() => {
+    if (printingShipment && isGeneratingPdf) {
+      const captureAndDownload = async () => {
+        const element = document.getElementById('pdf-receipt-template')
+        if (element) {
+          try {
+            // Add a small delay to ensure rendering and images load
+            await new Promise(resolve => setTimeout(resolve, 300))
+            const canvas = await html2canvas(element, { scale: 2, useCORS: true, backgroundColor: '#0D1117' })
+            const imgData = canvas.toDataURL('image/png')
+            const pdf = new jsPDF('p', 'mm', 'a4')
+            const pdfWidth = pdf.internal.pageSize.getWidth()
+            const pdfHeight = (canvas.height * pdfWidth) / canvas.width
+            pdf.addImage(imgData, 'PNG', 0, 0, pdfWidth, pdfHeight)
+            pdf.save(`Receipt_${printingShipment.invoiceId}.pdf`)
+          } catch (err) {
+            console.error("Failed to generate PDF:", err)
+            alert("Error generating PDF receipt.")
+          } finally {
+            setPrintingShipment(null)
+            setIsGeneratingPdf(false)
+          }
+        }
+      }
+      captureAndDownload()
+    }
+  }, [printingShipment, isGeneratingPdf])
 
   return (
     <div className="space-y-8 select-none text-left pb-12">
@@ -510,9 +573,15 @@ export default function CustomerDashboard() {
                   
                   <div className="flex items-center gap-4">
                     <span className="text-xs font-bold text-primary">{s.cost.toLocaleString()} NGN</span>
-                    <Button variant="outline" size="sm" onClick={() => alert(`Downloading PDF Invoice file ${s.invoiceId}...`)} className="flex items-center gap-1 text-[10px]">
+                    <Button 
+                      variant="outline" 
+                      size="sm" 
+                      onClick={() => generateInvoicePdf(s)} 
+                      disabled={isGeneratingPdf}
+                      className="flex items-center gap-1 text-[10px]"
+                    >
                       <DownloadIcon className="w-3.5 h-3.5" />
-                      <span>Download PDF</span>
+                      <span>{isGeneratingPdf && printingShipment?.id === s.id ? 'Generating...' : 'Download PDF'}</span>
                     </Button>
                   </div>
                 </div>
@@ -679,6 +748,128 @@ export default function CustomerDashboard() {
               </div>
             </form>
           </Card>
+        </div>
+      )}
+
+      {/* HIDDEN RECEIPT TEMPLATE FOR HTML2CANVAS */}
+      {printingShipment && (
+        <div 
+          id="pdf-receipt-template" 
+          className="absolute left-[-9999px] top-[-9999px] w-[800px] bg-[#0D1117] p-12 text-white font-sans"
+          style={{ zIndex: -999 }}
+        >
+          {/* Header */}
+          <div className="flex justify-between items-start border-b border-white/20 pb-8 mb-8">
+            <div className="flex flex-col gap-2">
+              <div className="flex items-center gap-2">
+                {/* Fallback text if image cannot load in canvas, but image is preferred */}
+                <div className="w-12 h-12 bg-primary flex items-center justify-center font-black text-black text-xl rounded-md">
+                  SE
+                </div>
+                <h1 className="text-3xl font-black font-display tracking-tight">SPATIAL EXPRESS</h1>
+              </div>
+              <p className="text-xs text-muted uppercase tracking-wider font-bold">Fast. Reliable. Everywhere.</p>
+            </div>
+            <div className="text-right space-y-1">
+              <h2 className="text-2xl font-bold text-primary">OFFICIAL RECEIPT</h2>
+              <p className="text-sm font-semibold">Invoice No: {printingShipment.invoiceId}</p>
+              <p className="text-sm text-muted">Date: {printingShipment.createdDate}</p>
+            </div>
+          </div>
+
+          {/* Customer & Route details */}
+          <div className="grid grid-cols-2 gap-12 mb-10">
+            <div className="space-y-4">
+              <h3 className="text-sm font-bold uppercase tracking-wider text-primary border-b border-white/10 pb-2">Shipper Details</h3>
+              <div>
+                <p className="text-base font-bold">Customer</p>
+                <p className="text-sm text-muted">Client Account (Premium)</p>
+                <p className="text-sm text-muted">contact@customer.com</p>
+              </div>
+            </div>
+            
+            <div className="space-y-4">
+              <h3 className="text-sm font-bold uppercase tracking-wider text-primary border-b border-white/10 pb-2">Recipient Details</h3>
+              <div>
+                <p className="text-base font-bold">{printingShipment.recipientName}</p>
+                <p className="text-sm text-muted">{printingShipment.destination}</p>
+              </div>
+            </div>
+          </div>
+
+          {/* Shipment Particulars */}
+          <div className="mb-10">
+            <h3 className="text-sm font-bold uppercase tracking-wider text-primary border-b border-white/10 pb-2 mb-4">Shipment Particulars</h3>
+            <table className="w-full text-left border-collapse">
+              <thead>
+                <tr className="bg-white/5">
+                  <th className="p-3 text-sm font-bold">Tracking ID</th>
+                  <th className="p-3 text-sm font-bold">Origin</th>
+                  <th className="p-3 text-sm font-bold">Destination</th>
+                  <th className="p-3 text-sm font-bold text-center">Weight</th>
+                  <th className="p-3 text-sm font-bold text-center">Courier</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr className="border-b border-white/10">
+                  <td className="p-3 text-sm font-bold">{printingShipment.id}</td>
+                  <td className="p-3 text-sm">{printingShipment.origin}</td>
+                  <td className="p-3 text-sm">{printingShipment.destination}</td>
+                  <td className="p-3 text-sm text-center">{printingShipment.weight} kg</td>
+                  <td className="p-3 text-sm text-center capitalize">{printingShipment.courier}</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+
+          {/* Financials */}
+          <div className="flex justify-end mb-16">
+            <div className="w-80 space-y-3">
+              <div className="flex justify-between text-sm">
+                <span className="text-muted">Subtotal</span>
+                <span>{(printingShipment.cost * 0.9).toFixed(2)} NGN</span>
+              </div>
+              <div className="flex justify-between text-sm">
+                <span className="text-muted">Tax & Customs (10%)</span>
+                <span>{(printingShipment.cost * 0.1).toFixed(2)} NGN</span>
+              </div>
+              <div className="flex justify-between text-lg font-black text-primary border-t border-white/20 pt-3">
+                <span>TOTAL PAID</span>
+                <span>{printingShipment.cost.toLocaleString()} NGN</span>
+              </div>
+            </div>
+          </div>
+
+          {/* Footer & Barcode mock */}
+          <div className="flex items-end justify-between border-t border-white/20 pt-8">
+            <div className="space-y-1">
+              <p className="text-xs text-muted">Thank you for shipping with Spatial Express.</p>
+              <p className="text-[10px] text-muted">If you have any questions concerning this invoice, contact support@spatialexpress.com</p>
+            </div>
+            
+            {/* Mock Barcode generated with pure CSS */}
+            <div className="flex flex-col items-center gap-2">
+              <div className="flex h-12 items-end justify-center bg-white p-2 rounded w-48">
+                <div className="w-1 h-10 bg-black mr-1" />
+                <div className="w-0.5 h-10 bg-black mr-0.5" />
+                <div className="w-2 h-10 bg-black mr-1" />
+                <div className="w-0.5 h-10 bg-black mr-1.5" />
+                <div className="w-1.5 h-10 bg-black mr-0.5" />
+                <div className="w-3 h-10 bg-black mr-1" />
+                <div className="w-0.5 h-10 bg-black mr-1" />
+                <div className="w-1 h-10 bg-black mr-2" />
+                <div className="w-2 h-10 bg-black mr-0.5" />
+                <div className="w-0.5 h-10 bg-black mr-1" />
+                <div className="w-1 h-10 bg-black mr-1" />
+                <div className="w-1.5 h-10 bg-black mr-0.5" />
+                <div className="w-2 h-10 bg-black mr-1.5" />
+                <div className="w-0.5 h-10 bg-black mr-1" />
+                <div className="w-1 h-10 bg-black" />
+              </div>
+              <p className="text-[10px] tracking-[0.3em] font-mono">{printingShipment.id}</p>
+            </div>
+          </div>
+
         </div>
       )}
 

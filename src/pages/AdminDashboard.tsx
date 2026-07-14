@@ -219,7 +219,7 @@ export default function AdminDashboard() {
         <AnimatePresence mode="wait">
         
         {/* TAB 1: OPERATIONS DASHBOARD (KPI Charts) */}
-        {['admin-overview', 'admin-shipments', 'admin-orders', 'admin-customers', 'admin-payments', 'admin-settings'].includes(activeView) && (
+        {activeView === 'admin-overview' && (
           <motion.div 
             key="overview"
             initial={{ opacity: 0, y: 10 }}
@@ -715,6 +715,286 @@ export default function AdminDashboard() {
                 </div>
               ))}
             </div>
+            </Card>
+          </motion.div>
+        )}
+
+        {/* TAB: SHIPMENTS */}
+        {activeView === 'admin-shipments' && (
+          <motion.div 
+            key="admin-shipments"
+            initial={{ opacity: 0, y: 10 }}
+            animate={{ opacity: 1, y: 0 }}
+            exit={{ opacity: 0, y: -10 }}
+            transition={{ duration: 0.2 }}
+          >
+            <Card className="glass-card border border-white/5 p-5">
+              <div className="flex flex-col md:flex-row md:items-center justify-between gap-4 border-b border-white/5 pb-4 mb-4">
+                <div>
+                  <h3 className="text-xs font-bold text-white uppercase tracking-wider">Network Shipments</h3>
+                  <p className="text-[10px] text-muted mt-0.5">Global ledger of all dispatched manifests</p>
+                </div>
+                <div className="flex items-center gap-2">
+                  <SearchIcon className="w-4 h-4 text-muted" />
+                  <input
+                    type="text"
+                    placeholder="Search tracking ID or origin..."
+                    className="bg-transparent border border-white/10 rounded-md px-3 py-1.5 focus:outline-none focus:border-primary/45 text-xs text-white w-56 placeholder:text-muted/50"
+                  />
+                </div>
+              </div>
+
+              <div className="overflow-x-auto custom-scrollbar">
+                <table className="w-full text-xs text-left">
+                  <thead>
+                    <tr className="border-b border-white/5 text-muted uppercase tracking-wider text-[9px]">
+                      <th className="py-3 px-2">Tracking ID</th>
+                      <th className="py-3 px-2">Sender</th>
+                      <th className="py-3 px-2">Recipient</th>
+                      <th className="py-3 px-2">Origin ➔ Destination</th>
+                      <th className="py-3 px-2">Weight</th>
+                      <th className="py-3 px-2">Courier</th>
+                      <th className="py-3 px-2">Status</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    {shipments.map((s) => (
+                      <tr key={s.id} className="border-b border-white/[0.02] hover:bg-white/[0.01] transition-colors">
+                        <td className="py-3.5 px-2 font-bold text-primary">{s.id}</td>
+                        <td className="py-3.5 px-2 text-white">Guest User</td>
+                        <td className="py-3.5 px-2 text-white">{s.recipientName}</td>
+                        <td className="py-3.5 px-2 text-text-secondary">{s.origin} ➔ {s.destination}</td>
+                        <td className="py-3.5 px-2 text-muted">{s.weight} kg</td>
+                        <td className="py-3.5 px-2 capitalize">{s.courier}</td>
+                        <td className="py-3.5 px-2">
+                          <Badge variant={
+                            s.status === 'delivered' ? 'success' : 
+                            ['customs', 'cancelled'].includes(s.status) ? 'danger' : 'warning'
+                          }>
+                            {s.status.replace('_', ' ')}
+                          </Badge>
+                        </td>
+                      </tr>
+                    ))}
+                  </tbody>
+                </table>
+              </div>
+            </Card>
+          </motion.div>
+        )}
+
+        {/* TAB: PENDING PICKUPS (ORDERS) */}
+        {activeView === 'admin-orders' && (
+          <motion.div 
+            key="admin-orders"
+            initial={{ opacity: 0, y: 10 }}
+            animate={{ opacity: 1, y: 0 }}
+            exit={{ opacity: 0, y: -10 }}
+            transition={{ duration: 0.2 }}
+          >
+            <Card className="glass-card border border-white/5 p-5">
+              <div className="border-b border-white/5 pb-3 mb-4 flex justify-between items-center">
+                <div>
+                  <h3 className="text-xs font-bold text-white uppercase tracking-wider">Pending Dispatches</h3>
+                  <p className="text-[10px] text-muted mt-0.5">Awaiting driver assignment and pickup</p>
+                </div>
+                <Button size="sm" className="h-8 text-[10px] font-bold">Auto-Assign Drivers</Button>
+              </div>
+
+              <div className="space-y-4">
+                {shipments.filter(s => s.status === 'processing').map(s => (
+                  <div key={s.id} className="p-4 rounded-xl bg-black/40 border border-warning/20 flex flex-col md:flex-row items-start md:items-center justify-between gap-4">
+                    <div className="text-left space-y-1">
+                      <span className="text-[10px] text-warning font-bold">{s.id}</span>
+                      <p className="text-xs font-bold text-white leading-none">From: {s.origin} • To: {s.destination}</p>
+                      <p className="text-[10px] text-muted">Client: Guest User • Courier Pref: <span className="capitalize text-white">{s.courier}</span></p>
+                    </div>
+                    
+                    <div className="flex gap-2">
+                      <Button size="sm" variant="outline" className="h-8 text-[10px]">Assign Driver</Button>
+                      <Button size="sm" className="h-8 text-[10px]">Mark as Picked Up</Button>
+                    </div>
+                  </div>
+                ))}
+                {shipments.filter(s => s.status === 'processing').length === 0 && (
+                  <p className="text-xs text-muted text-center py-12">No pending pickups at this time.</p>
+                )}
+              </div>
+            </Card>
+          </motion.div>
+        )}
+
+        {/* TAB: CUSTOMERS */}
+        {activeView === 'admin-customers' && (
+          <motion.div 
+            key="admin-customers"
+            initial={{ opacity: 0, y: 10 }}
+            animate={{ opacity: 1, y: 0 }}
+            exit={{ opacity: 0, y: -10 }}
+            transition={{ duration: 0.2 }}
+          >
+            <Card className="glass-card border border-white/5 p-5">
+              <div className="border-b border-white/5 pb-3 mb-4">
+                <h3 className="text-xs font-bold text-white uppercase tracking-wider">Customer Directory</h3>
+                <p className="text-[10px] text-muted mt-0.5">Registered clients and platform users</p>
+              </div>
+
+              <div className="overflow-x-auto custom-scrollbar">
+                <table className="w-full text-xs text-left">
+                  <thead>
+                    <tr className="border-b border-white/5 text-muted uppercase tracking-wider text-[9px]">
+                      <th className="py-3 px-2">Name</th>
+                      <th className="py-3 px-2">Email</th>
+                      <th className="py-3 px-2">Role</th>
+                      <th className="py-3 px-2">Joined</th>
+                      <th className="py-3 px-2">Status</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <tr className="border-b border-white/[0.02] hover:bg-white/[0.01]">
+                      <td className="py-3.5 px-2 font-bold text-white">Danny Client</td>
+                      <td className="py-3.5 px-2 text-text-secondary">danny@example.com</td>
+                      <td className="py-3.5 px-2 text-muted">Customer</td>
+                      <td className="py-3.5 px-2 text-muted">Jul 12, 2026</td>
+                      <td className="py-3.5 px-2"><Badge variant="success">Active</Badge></td>
+                    </tr>
+                    <tr className="border-b border-white/[0.02] hover:bg-white/[0.01]">
+                      <td className="py-3.5 px-2 font-bold text-white">Dora Operator</td>
+                      <td className="py-3.5 px-2 text-text-secondary">dora@sel.com</td>
+                      <td className="py-3.5 px-2 text-primary font-bold">Admin</td>
+                      <td className="py-3.5 px-2 text-muted">Jan 01, 2026</td>
+                      <td className="py-3.5 px-2"><Badge variant="success">Active</Badge></td>
+                    </tr>
+                    <tr className="border-b border-white/[0.02] hover:bg-white/[0.01]">
+                      <td className="py-3.5 px-2 font-bold text-white">Guest User</td>
+                      <td className="py-3.5 px-2 text-text-secondary">guest@unverified.com</td>
+                      <td className="py-3.5 px-2 text-muted">Customer</td>
+                      <td className="py-3.5 px-2 text-muted">Jul 14, 2026</td>
+                      <td className="py-3.5 px-2"><Badge variant="warning">Unverified</Badge></td>
+                    </tr>
+                  </tbody>
+                </table>
+              </div>
+            </Card>
+          </motion.div>
+        )}
+
+        {/* TAB: PAYMENTS */}
+        {activeView === 'admin-payments' && (
+          <motion.div 
+            key="admin-payments"
+            initial={{ opacity: 0, y: 10 }}
+            animate={{ opacity: 1, y: 0 }}
+            exit={{ opacity: 0, y: -10 }}
+            transition={{ duration: 0.2 }}
+          >
+            <Card className="glass-card border border-white/5 p-5">
+              <div className="border-b border-white/5 pb-3 mb-4 flex justify-between items-center">
+                <div>
+                  <h3 className="text-xs font-bold text-white uppercase tracking-wider">Payment Ledger</h3>
+                  <p className="text-[10px] text-muted mt-0.5">Transaction histories and invoice settlements</p>
+                </div>
+                <div className="flex items-center gap-2">
+                  <Badge variant="success" className="px-3 py-1">Total Rev: 12,480,200 NGN</Badge>
+                </div>
+              </div>
+
+              <div className="overflow-x-auto custom-scrollbar">
+                <table className="w-full text-xs text-left">
+                  <thead>
+                    <tr className="border-b border-white/5 text-muted uppercase tracking-wider text-[9px]">
+                      <th className="py-3 px-2">Invoice ID</th>
+                      <th className="py-3 px-2">Tracking Ref</th>
+                      <th className="py-3 px-2">Date</th>
+                      <th className="py-3 px-2">Amount</th>
+                      <th className="py-3 px-2">Gateway</th>
+                      <th className="py-3 px-2">Status</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    {shipments.map((s) => (
+                      <tr key={s.invoiceId} className="border-b border-white/[0.02] hover:bg-white/[0.01]">
+                        <td className="py-3.5 px-2 font-bold text-white">{s.invoiceId}</td>
+                        <td className="py-3.5 px-2 text-primary">{s.id}</td>
+                        <td className="py-3.5 px-2 text-muted">{s.createdDate}</td>
+                        <td className="py-3.5 px-2 font-bold text-white">{s.cost.toLocaleString()} NGN</td>
+                        <td className="py-3.5 px-2 text-text-secondary">Paystack</td>
+                        <td className="py-3.5 px-2"><Badge variant="success">Paid</Badge></td>
+                      </tr>
+                    ))}
+                  </tbody>
+                </table>
+              </div>
+            </Card>
+          </motion.div>
+        )}
+
+        {/* TAB: SETTINGS */}
+        {activeView === 'admin-settings' && (
+          <motion.div 
+            key="admin-settings"
+            initial={{ opacity: 0, y: 10 }}
+            animate={{ opacity: 1, y: 0 }}
+            exit={{ opacity: 0, y: -10 }}
+            transition={{ duration: 0.2 }}
+            className="grid grid-cols-1 md:grid-cols-2 gap-6"
+          >
+            <Card className="glass-card border border-white/5 p-5 space-y-5 text-left">
+              <div className="border-b border-white/5 pb-3">
+                <h3 className="text-xs font-bold text-white uppercase tracking-wider">System Preferences</h3>
+                <p className="text-[10px] text-muted mt-0.5">Configure platform behavior</p>
+              </div>
+              
+              <div className="space-y-4">
+                <div className="flex items-center justify-between">
+                  <div>
+                    <p className="text-xs font-bold text-white">Require Puzzle Captcha</p>
+                    <p className="text-[10px] text-muted">Enforce spatial verification on login</p>
+                  </div>
+                  <div className="w-9 h-5 rounded-full bg-primary relative cursor-pointer">
+                    <div className="absolute top-1 right-1 w-3 h-3 rounded-full bg-white" />
+                  </div>
+                </div>
+
+                <div className="flex items-center justify-between">
+                  <div>
+                    <p className="text-xs font-bold text-white">Auto-assign Drivers</p>
+                    <p className="text-[10px] text-muted">Automatically route pending pickups</p>
+                  </div>
+                  <div className="w-9 h-5 rounded-full bg-white/10 relative cursor-pointer">
+                    <div className="absolute top-1 left-1 w-3 h-3 rounded-full bg-white/50" />
+                  </div>
+                </div>
+
+                <div className="flex items-center justify-between">
+                  <div>
+                    <p className="text-xs font-bold text-white">Developer API Mode</p>
+                    <p className="text-[10px] text-muted">Enable sandbox endpoints</p>
+                  </div>
+                  <div className="w-9 h-5 rounded-full bg-white/10 relative cursor-pointer">
+                    <div className="absolute top-1 left-1 w-3 h-3 rounded-full bg-white/50" />
+                  </div>
+                </div>
+              </div>
+            </Card>
+
+            <Card className="glass-card border border-white/5 p-5 space-y-5 text-left">
+              <div className="border-b border-white/5 pb-3">
+                <h3 className="text-xs font-bold text-white uppercase tracking-wider">Security & API Keys</h3>
+                <p className="text-[10px] text-muted mt-0.5">Manage external integrations</p>
+              </div>
+              
+              <div className="space-y-4">
+                <div className="space-y-1.5">
+                  <label className="text-[10px] font-bold text-muted uppercase tracking-wider">Paystack Secret Key</label>
+                  <Input type="password" value="sk_test_mock1234567890abcdef" readOnly className="bg-[#050608]/80 text-muted" />
+                </div>
+                <div className="space-y-1.5">
+                  <label className="text-[10px] font-bold text-muted uppercase tracking-wider">SendGrid API Key</label>
+                  <Input type="password" value="SG.mock_email_key_xyz" readOnly className="bg-[#050608]/80 text-muted" />
+                </div>
+                <Button className="w-full" size="sm">Regenerate Keys</Button>
+              </div>
             </Card>
           </motion.div>
         )}
