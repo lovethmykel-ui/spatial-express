@@ -8,6 +8,8 @@ import About from './About'
 import Contact from './Contact'
 import { Card } from '../components/ui/Card'
 import { TruckIcon, ShieldCheckIcon, AnchorIcon, ShieldAlertIcon, AwardIcon, InboxIcon, HardHatIcon, CompassIcon } from '../components/ui/CustomIcons'
+import { ThreeDTilt } from '../components/ui/ThreeDTilt'
+import { Floating3DDecorations } from '../components/ui/ParallaxLayer'
 
 export default function Dashboard() {
   const { activePortal, activeView } = useLogistics()
@@ -24,8 +26,12 @@ export default function Dashboard() {
     ]
 
     return (
-      <div className="space-y-12 select-none text-left pb-12">
-        <div className="text-left space-y-2">
+      <div className="space-y-12 select-none text-left pb-12 relative overflow-hidden">
+
+        {/* Parallax animations */}
+        <Floating3DDecorations />
+
+        <div className="text-left space-y-2 z-10 relative">
           <span className="text-[10px] font-bold text-primary uppercase tracking-widest bg-primary/10 px-3 py-1 rounded-full">Operational Services</span>
           <h1 className="text-3xl font-extrabold text-white font-display tracking-tight">Cargo Consolidation & Freight Forwarding</h1>
           <p className="text-xs text-muted max-w-lg leading-relaxed">
@@ -33,19 +39,21 @@ export default function Dashboard() {
           </p>
         </div>
 
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-6 z-10 relative">
           {services.map(s => {
             const Icon = s.icon
             return (
-              <Card key={s.title} className="glass-card border border-white/5 p-5 hover:border-primary/20 hover:shadow-glow transition-all duration-300 flex flex-col justify-between">
-                <div className="space-y-4">
-                  <div className="w-10 h-10 rounded-lg bg-primary/10 flex items-center justify-center">
-                    <Icon className="w-5 h-5 text-primary" />
+              <ThreeDTilt maxTilt={15} scale={1.03} key={s.title}>
+                <Card className="glass-card border border-white/5 p-5 flex flex-col justify-between h-full w-full">
+                  <div className="space-y-4">
+                    <div className="w-10 h-10 rounded-lg bg-primary/10 flex items-center justify-center">
+                      <Icon className="w-5 h-5 text-primary" />
+                    </div>
+                    <h3 className="text-xs font-bold text-white uppercase tracking-wider">{s.title}</h3>
+                    <p className="text-[11px] text-text-secondary leading-relaxed">{s.desc}</p>
                   </div>
-                  <h3 className="text-xs font-bold text-white uppercase tracking-wider">{s.title}</h3>
-                  <p className="text-[11px] text-text-secondary leading-relaxed">{s.desc}</p>
-                </div>
-              </Card>
+                </Card>
+              </ThreeDTilt>
             )
           })}
         </div>

@@ -2,6 +2,8 @@ import { useState } from 'react'
 import { motion, AnimatePresence } from 'framer-motion'
 import { ShieldIcon, TargetIcon, CompassIcon, MapPinIcon, BuildingIcon, CalendarIcon } from '../components/ui/CustomIcons'
 import { Card, CardHeader, CardTitle, CardContent } from '../components/ui/Card'
+import { ThreeDTilt } from '../components/ui/ThreeDTilt'
+import { Floating3DDecorations } from '../components/ui/ParallaxLayer'
 
 export default function About() {
   const [activeYear, setActiveYear] = useState('2026')
@@ -27,90 +29,105 @@ export default function About() {
   ]
 
   return (
-    <div className="space-y-12 select-none pb-12">
+    <div className="space-y-12 select-none pb-12 relative overflow-hidden">
       
+      {/* 3D PARALLAX BACKGROUND */}
+      <Floating3DDecorations />
+
       {/* Hero section */}
-      <div className="relative rounded-2xl overflow-hidden glass-panel border border-white/5 p-8 md:p-12 flex flex-col md:flex-row items-center gap-8 bg-gradient-to-br from-[#0D1117]/80 to-[#050608]/90">
-        <div className="flex-1 text-left space-y-4">
-          <span className="text-[10px] font-bold text-primary uppercase tracking-widest bg-primary/10 px-3 py-1 rounded-full">Our Story</span>
-          <h1 className="text-3xl md:text-4xl font-extrabold text-white font-display tracking-tight leading-tight">
-            Connecting Nigeria to the World
-          </h1>
-          <p className="text-sm text-text-secondary leading-relaxed">
-            Founded in 2022, Spatial Express Logistics was built on a simple premise: international shipping shouldn't be a black box of hidden fees, manual calls, and fragmented tracking. 
-          </p>
-          <p className="text-sm text-text-secondary leading-relaxed">
-            By creating a digital freight forwarding hub, we aggregate shipping routes, automate customs brokerage, and deliver software-driven transparency that empowers everyday businesses and enterprise operations alike.
-          </p>
-        </div>
-        
-        {/* Story Illustration Grid */}
-        <div className="flex-1 grid grid-cols-2 gap-4 w-full">
-          <div className="col-span-2 rounded-xl overflow-hidden h-48 border border-white/5 relative group">
-            <div className="absolute inset-0 bg-gradient-to-t from-black/80 to-transparent z-10" />
-            <img src="/images/shipping_cartons.png" alt="Shipping cartons" className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105" />
-            <div className="absolute bottom-4 left-4 z-20">
-              <p className="text-xs text-white/90 italic font-medium">"Processing millions of checkpoints in real-time."</p>
+      <ThreeDTilt maxTilt={5} scale={1.01} className="w-full z-10 relative">
+        <div className="relative rounded-2xl overflow-hidden glass-panel border border-white/5 p-8 md:p-12 flex flex-col md:flex-row items-center gap-8 bg-gradient-to-br from-[#0D1117]/80 to-[#050608]/90 h-full">
+          <div className="flex-1 text-left space-y-4">
+            <span className="text-[10px] font-bold text-primary uppercase tracking-widest bg-primary/10 px-3 py-1 rounded-full">Our Story</span>
+            <h1 className="text-3xl md:text-4xl font-extrabold text-white font-display tracking-tight leading-tight">
+              Connecting Nigeria to the World
+            </h1>
+            <p className="text-sm text-text-secondary leading-relaxed">
+              Founded in 2022, Spatial Express Logistics was built on a simple premise: international shipping shouldn't be a black box of hidden fees, manual calls, and fragmented tracking.
+            </p>
+            <p className="text-sm text-text-secondary leading-relaxed">
+              By creating a digital freight forwarding hub, we aggregate shipping routes, automate customs brokerage, and deliver software-driven transparency that empowers everyday businesses and enterprise operations alike.
+            </p>
+          </div>
+
+          {/* Story Illustration Grid */}
+          <div className="flex-1 grid grid-cols-2 gap-4 w-full">
+            <div className="col-span-2 rounded-xl overflow-hidden h-48 border border-white/5 relative group">
+              <div className="absolute inset-0 bg-gradient-to-t from-black/80 to-transparent z-10" />
+              <img src="/images/shipping_cartons.png" alt="Shipping cartons" className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105" />
+              <div className="absolute bottom-4 left-4 z-20">
+                <p className="text-xs text-white/90 italic font-medium">"Processing millions of checkpoints in real-time."</p>
+              </div>
             </div>
-          </div>
-          <div className="glass-card p-6 border border-white/5 flex flex-col justify-center items-center text-center">
-            <h3 className="text-4xl font-black text-primary font-display">5,000+</h3>
-            <p className="text-[10px] text-text-secondary font-bold mt-1 uppercase tracking-wider">Completed Freight Runs</p>
-          </div>
-          <div className="glass-card p-6 border border-white/5 flex flex-col justify-center items-center text-center">
-            <h3 className="text-4xl font-black text-primary font-display">200+</h3>
-            <p className="text-[10px] text-text-secondary font-bold mt-1 uppercase tracking-wider">Countries Serviced</p>
+            <ThreeDTilt maxTilt={15} scale={1.05}>
+              <div className="glass-card p-6 border border-white/5 flex flex-col justify-center items-center text-center h-full">
+                <h3 className="text-4xl font-black text-primary font-display">5,000+</h3>
+                <p className="text-[10px] text-text-secondary font-bold mt-1 uppercase tracking-wider">Completed Freight Runs</p>
+              </div>
+            </ThreeDTilt>
+            <ThreeDTilt maxTilt={15} scale={1.05}>
+              <div className="glass-card p-6 border border-white/5 flex flex-col justify-center items-center text-center h-full">
+                <h3 className="text-4xl font-black text-primary font-display">200+</h3>
+                <p className="text-[10px] text-text-secondary font-bold mt-1 uppercase tracking-wider">Countries Serviced</p>
+              </div>
+            </ThreeDTilt>
           </div>
         </div>
-      </div>
+      </ThreeDTilt>
 
       {/* Mission / Vision Cards */}
-      <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-        <Card className="glass-card border border-white/5 text-left p-6">
-          <CardHeader className="p-0 mb-4 flex items-center gap-3">
-            <div className="w-10 h-10 rounded-lg bg-primary/10 flex items-center justify-center">
-              <TargetIcon className="w-5 h-5 text-primary" />
-            </div>
-            <CardTitle className="text-sm font-bold uppercase tracking-wider text-white">Our Mission</CardTitle>
-          </CardHeader>
-          <CardContent className="p-0">
-            <p className="text-xs text-text-secondary leading-relaxed">
-              To lower barriers to global trade for African businesses by supplying direct freight booking, automated duty estimations, and instant carrier route selection in a single operational dashboard.
-            </p>
-          </CardContent>
-        </Card>
+      <div className="grid grid-cols-1 md:grid-cols-3 gap-6 z-10 relative">
+        <ThreeDTilt maxTilt={15} scale={1.03}>
+          <Card className="glass-card border border-white/5 text-left p-6 h-full">
+            <CardHeader className="p-0 mb-4 flex items-center gap-3">
+              <div className="w-10 h-10 rounded-lg bg-primary/10 flex items-center justify-center">
+                <TargetIcon className="w-5 h-5 text-primary" />
+              </div>
+              <CardTitle className="text-sm font-bold uppercase tracking-wider text-white">Our Mission</CardTitle>
+            </CardHeader>
+            <CardContent className="p-0">
+              <p className="text-xs text-text-secondary leading-relaxed">
+                To lower barriers to global trade for African businesses by supplying direct freight booking, automated duty estimations, and instant carrier route selection in a single operational dashboard.
+              </p>
+            </CardContent>
+          </Card>
+        </ThreeDTilt>
 
-        <Card className="glass-card border border-white/5 text-left p-6">
-          <CardHeader className="p-0 mb-4 flex items-center gap-3">
-            <div className="w-10 h-10 rounded-lg bg-primary/10 flex items-center justify-center">
-              <CompassIcon className="w-5 h-5 text-primary" />
-            </div>
-            <CardTitle className="text-sm font-bold uppercase tracking-wider text-white">Our Vision</CardTitle>
-          </CardHeader>
-          <CardContent className="p-0">
-            <p className="text-xs text-text-secondary leading-relaxed">
-              To become the default logistics operating system connecting African hubs to European, American, and Asian trading zones, blending automated software with world-class physical operations.
-            </p>
-          </CardContent>
-        </Card>
+        <ThreeDTilt maxTilt={15} scale={1.03}>
+          <Card className="glass-card border border-white/5 text-left p-6 h-full">
+            <CardHeader className="p-0 mb-4 flex items-center gap-3">
+              <div className="w-10 h-10 rounded-lg bg-primary/10 flex items-center justify-center">
+                <CompassIcon className="w-5 h-5 text-primary" />
+              </div>
+              <CardTitle className="text-sm font-bold uppercase tracking-wider text-white">Our Vision</CardTitle>
+            </CardHeader>
+            <CardContent className="p-0">
+              <p className="text-xs text-text-secondary leading-relaxed">
+                To become the default logistics operating system connecting African hubs to European, American, and Asian trading zones, blending automated software with world-class physical operations.
+              </p>
+            </CardContent>
+          </Card>
+        </ThreeDTilt>
 
-        <Card className="glass-card border border-white/5 text-left p-6">
-          <CardHeader className="p-0 mb-4 flex items-center gap-3">
-            <div className="w-10 h-10 rounded-lg bg-primary/10 flex items-center justify-center">
-              <ShieldIcon className="w-5 h-5 text-primary" />
-            </div>
-            <CardTitle className="text-sm font-bold uppercase tracking-wider text-white">Core Values</CardTitle>
-          </CardHeader>
-          <CardContent className="p-0">
-            <p className="text-xs text-text-secondary leading-relaxed">
-              Integrity and clarity above all. We display true shipping fees upfront, protect cargo values via comprehensive insurance routing, and respect security standards (WCAG AA & ISO-compliant).
-            </p>
-          </CardContent>
-        </Card>
+        <ThreeDTilt maxTilt={15} scale={1.03}>
+          <Card className="glass-card border border-white/5 text-left p-6 h-full">
+            <CardHeader className="p-0 mb-4 flex items-center gap-3">
+              <div className="w-10 h-10 rounded-lg bg-primary/10 flex items-center justify-center">
+                <ShieldIcon className="w-5 h-5 text-primary" />
+              </div>
+              <CardTitle className="text-sm font-bold uppercase tracking-wider text-white">Core Values</CardTitle>
+            </CardHeader>
+            <CardContent className="p-0">
+              <p className="text-xs text-text-secondary leading-relaxed">
+                Integrity and clarity above all. We display true shipping fees upfront, protect cargo values via comprehensive insurance routing, and respect security standards (WCAG AA & ISO-compliant).
+              </p>
+            </CardContent>
+          </Card>
+        </ThreeDTilt>
       </div>
 
       {/* Interactive Milestone Timeline Slider */}
-      <div className="glass-panel border border-white/5 rounded-2xl p-8 text-left space-y-6 bg-background/30">
+      <div className="glass-panel border border-white/5 rounded-2xl p-8 text-left space-y-6 bg-background/30 z-10 relative">
         <div className="flex items-center justify-between border-b border-white/5 pb-4">
           <div className="flex items-center gap-2">
             <CalendarIcon className="w-5 h-5 text-primary" />
@@ -167,47 +184,51 @@ export default function About() {
       </div>
 
       {/* Leadership Section */}
-      <div className="space-y-6">
+      <div className="space-y-6 z-10 relative">
         <h3 className="text-lg font-bold text-white uppercase tracking-wider text-left">Executive Board</h3>
         <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
           {leaders.map(l => (
-            <div key={l.name} className="glass-card border border-white/5 overflow-hidden flex flex-col sm:flex-row items-center text-left bg-gradient-to-r from-[#0D1117]/60 to-[#111827]/40 p-4 gap-6">
-              <img src={l.img} alt={l.name} className="w-28 h-28 rounded-full sm:rounded-xl object-cover border border-primary/20 bg-black" />
-              <div className="flex-1 space-y-2">
-                <div>
-                  <h4 className="text-sm font-bold text-white tracking-wide">{l.name}</h4>
-                  <span className="text-[10px] text-primary font-bold uppercase tracking-widest">{l.role}</span>
+            <ThreeDTilt maxTilt={10} scale={1.03} key={l.name}>
+              <div className="glass-card border border-white/5 overflow-hidden flex flex-col sm:flex-row items-center text-left bg-gradient-to-r from-[#0D1117]/60 to-[#111827]/40 p-4 gap-6 h-full w-full">
+                <img src={l.img} alt={l.name} className="w-28 h-28 rounded-full sm:rounded-xl object-cover border border-primary/20 bg-black" />
+                <div className="flex-1 space-y-2">
+                  <div>
+                    <h4 className="text-sm font-bold text-white tracking-wide">{l.name}</h4>
+                    <span className="text-[10px] text-primary font-bold uppercase tracking-widest">{l.role}</span>
+                  </div>
+                  <p className="text-xs text-text-secondary leading-relaxed">{l.bio}</p>
                 </div>
-                <p className="text-xs text-text-secondary leading-relaxed">{l.bio}</p>
               </div>
-            </div>
+            </ThreeDTilt>
           ))}
         </div>
       </div>
 
       {/* Office Locations */}
-      <div className="space-y-6">
+      <div className="space-y-6 z-10 relative">
         <h3 className="text-lg font-bold text-white uppercase tracking-wider text-left">Global Offices</h3>
         <div className="grid grid-cols-1 md:grid-cols-4 gap-6">
           {locations.map(loc => (
-            <Card key={loc.city} className="glass-card border border-[#FFFFFF]/[0.03] text-left p-5 hover:border-primary/25 hover:shadow-glow transition-all duration-300">
-              <CardHeader className="p-0 mb-3 flex items-center gap-2">
-                <div className="w-8 h-8 rounded bg-primary/10 flex items-center justify-center">
-                  <BuildingIcon className="w-4 h-4 text-primary" />
-                </div>
-                <div>
-                  <h4 className="text-xs font-bold text-white tracking-wide">{loc.city}</h4>
-                  <span className="text-[9px] text-muted uppercase font-bold tracking-wider">{loc.role}</span>
-                </div>
-              </CardHeader>
-              <CardContent className="p-0 space-y-2">
-                <p className="text-[10px] text-text-secondary leading-relaxed">{loc.address}</p>
-                <div className="flex items-center gap-1.5 text-[9px] text-muted">
-                  <MapPinIcon className="w-3.5 h-3.5 text-primary" />
-                  <span>{loc.phone}</span>
-                </div>
-              </CardContent>
-            </Card>
+            <ThreeDTilt maxTilt={15} scale={1.05} key={loc.city}>
+              <Card className="glass-card border border-[#FFFFFF]/[0.03] text-left p-5 hover:border-primary/25 transition-all duration-300 h-full w-full">
+                <CardHeader className="p-0 mb-3 flex items-center gap-2">
+                  <div className="w-8 h-8 rounded bg-primary/10 flex items-center justify-center">
+                    <BuildingIcon className="w-4 h-4 text-primary" />
+                  </div>
+                  <div>
+                    <h4 className="text-xs font-bold text-white tracking-wide">{loc.city}</h4>
+                    <span className="text-[9px] text-muted uppercase font-bold tracking-wider">{loc.role}</span>
+                  </div>
+                </CardHeader>
+                <CardContent className="p-0 space-y-2">
+                  <p className="text-[10px] text-text-secondary leading-relaxed">{loc.address}</p>
+                  <div className="flex items-center gap-1.5 text-[9px] text-muted">
+                    <MapPinIcon className="w-3.5 h-3.5 text-primary" />
+                    <span>{loc.phone}</span>
+                  </div>
+                </CardContent>
+              </Card>
+            </ThreeDTilt>
           ))}
         </div>
       </div>

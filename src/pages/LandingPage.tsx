@@ -7,6 +7,8 @@ import { CountryFlag } from '../components/ui/CountryFlag'
 import { useState } from 'react'
 import { InteractiveMap } from '../components/InteractiveMap'
 import { cn } from '../lib/utils'
+import { ThreeDTilt } from '../components/ui/ThreeDTilt'
+import { Floating3DDecorations } from '../components/ui/ParallaxLayer'
 
 const containerVariants: Variants = {
   hidden: { opacity: 0 },
@@ -110,14 +112,17 @@ export default function LandingPage() {
   }
 
   return (
-    <div className="space-y-24 pb-12 select-none overflow-x-hidden">
+    <div className="space-y-24 pb-12 select-none overflow-x-hidden relative">
       
+      {/* 3D PARALLAX SCROLL FLOATING DECORATIONS */}
+      <Floating3DDecorations />
+
       {/* 1. HERO COMMAND CENTER */}
       <motion.div 
         initial={{ opacity: 0, y: 20 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ duration: 0.8, ease: "easeOut" }}
-        className="relative rounded-3xl overflow-hidden min-h-[750px] flex flex-col justify-between p-8 md:p-14 lg:p-20 gap-8 text-left border border-white/5 shadow-2xl"
+        className="relative rounded-3xl overflow-hidden min-h-[750px] flex flex-col justify-between p-8 md:p-14 lg:p-20 gap-8 text-left border border-white/5 shadow-2xl z-10"
       >
         {/* Deep Space Liquid Glass Background */}
         <div className="absolute inset-0 z-0 bg-background">
@@ -194,171 +199,172 @@ export default function LandingPage() {
             ))}
           </div>
           
-          {/* Form Area */}
-          <div className="bg-white/[0.02] backdrop-blur-2xl border border-white/[0.05] rounded-3xl p-6 md:p-8 flex flex-col md:flex-row items-end md:items-center gap-6 w-full shadow-[0_8px_32px_rgba(0,0,0,0.4)]">
-            <AnimatePresence mode="wait">
-              {activeHeroTab === 'quote' && (
-                <motion.form 
-                  key="quote"
-                  initial={{ opacity: 0, x: -10 }}
-                  animate={{ opacity: 1, x: 0 }}
-                  exit={{ opacity: 0, x: 10 }}
-                  transition={{ duration: 0.2 }}
-                  onSubmit={handleQuickQuoteSubmit} 
-                  className="flex-1 w-full flex flex-col md:flex-row items-center gap-5"
-                >
-                  <div className="flex-1 w-full space-y-1.5">
-                    <label className="text-[10px] text-gray-500 font-bold tracking-widest uppercase pl-1">Origin</label>
-                    <div className="bg-black/40 border border-white/5 rounded-2xl px-4 py-3.5 flex items-center gap-3">
-                      <CountryFlag countryCode="NG" size="md" />
-                      <span className="text-sm text-white font-medium">Nigeria</span>
+          {/* Form Area with interactive 3D perspective */}
+          <ThreeDTilt maxTilt={5} scale={1.01} className="w-full">
+            <div className="bg-white/[0.02] backdrop-blur-2xl border border-white/[0.05] rounded-3xl p-6 md:p-8 flex flex-col md:flex-row items-end md:items-center gap-6 w-full shadow-[0_8px_32px_rgba(0,0,0,0.4)]">
+              <AnimatePresence mode="wait">
+                {activeHeroTab === 'quote' && (
+                  <motion.form
+                    key="quote"
+                    initial={{ opacity: 0, x: -10 }}
+                    animate={{ opacity: 1, x: 0 }}
+                    exit={{ opacity: 0, x: 10 }}
+                    transition={{ duration: 0.2 }}
+                    onSubmit={handleQuickQuoteSubmit}
+                    className="flex-1 w-full flex flex-col md:flex-row items-center gap-5"
+                  >
+                    <div className="flex-1 w-full space-y-1.5">
+                      <label className="text-[10px] text-gray-500 font-bold tracking-widest uppercase pl-1">Origin</label>
+                      <div className="bg-black/40 border border-white/5 rounded-2xl px-4 py-3.5 flex items-center gap-3">
+                        <CountryFlag countryCode="NG" size="md" />
+                        <span className="text-sm text-white font-medium">Nigeria</span>
+                      </div>
                     </div>
-                  </div>
-                  
-                  <div className="flex-1 w-full space-y-1.5">
-                    <label className="text-[10px] text-gray-500 font-bold tracking-widest uppercase pl-1">Destination</label>
-                    <div className="w-full bg-black/40 border border-white/5 rounded-2xl px-4 flex items-center gap-3 focus-within:border-primary/50 transition-colors overflow-hidden">
-                      <CountryFlag 
-                        countryCode={calculatorForm.destination === 'United Kingdom' ? 'GB' : calculatorForm.destination === 'United States' ? 'US' : calculatorForm.destination === 'Canada' ? 'CA' : 'DE'} 
-                        size="md" 
-                        className="flex-shrink-0"
-                      />
-                      <select 
-                        value={calculatorForm.destination}
-                        onChange={(e) => setCalculatorForm((prev: any) => ({ ...prev, destination: e.target.value }))}
-                        className="w-full bg-transparent py-3.5 text-sm text-white font-medium appearance-none cursor-pointer outline-none border-none ring-0"
+
+                    <div className="flex-1 w-full space-y-1.5">
+                      <label className="text-[10px] text-gray-500 font-bold tracking-widest uppercase pl-1">Destination</label>
+                      <div className="w-full bg-black/40 border border-white/5 rounded-2xl px-4 flex items-center gap-3 focus-within:border-primary/50 transition-colors overflow-hidden">
+                        <CountryFlag
+                          countryCode={calculatorForm.destination === 'United Kingdom' ? 'GB' : calculatorForm.destination === 'United States' ? 'US' : calculatorForm.destination === 'Canada' ? 'CA' : 'DE'}
+                          size="md"
+                          className="flex-shrink-0"
+                        />
+                        <select
+                          value={calculatorForm.destination}
+                          onChange={(e) => setCalculatorForm((prev: any) => ({ ...prev, destination: e.target.value }))}
+                          className="w-full bg-transparent py-3.5 text-sm text-white font-medium appearance-none cursor-pointer outline-none border-none ring-0"
+                        >
+                          <option value="United Kingdom" className="bg-background text-white">United Kingdom</option>
+                          <option value="United States" className="bg-background text-white">United States</option>
+                          <option value="Canada" className="bg-background text-white">Canada</option>
+                          <option value="Germany" className="bg-background text-white">Germany</option>
+                        </select>
+                      </div>
+                    </div>
+
+                    <div className="w-full md:w-32 space-y-1.5">
+                      <label className="text-[10px] text-gray-500 font-bold tracking-widest uppercase pl-1">Weight</label>
+                      <div className="relative">
+                        <input
+                          type="number"
+                          value={calculatorForm.weight}
+                          onChange={(e) => setCalculatorForm((prev: any) => ({ ...prev, weight: parseFloat(e.target.value) || 1 }))}
+                          className="w-full bg-black/40 border border-white/5 rounded-2xl px-4 py-3.5 text-sm text-white font-medium focus:outline-none focus:border-primary/50 transition-colors"
+                        />
+                        <span className="absolute right-4 top-1/2 -translate-y-1/2 text-xs text-gray-500 font-bold">kg</span>
+                      </div>
+                    </div>
+
+                    <div className="w-full md:w-auto mt-4 md:mt-0 pt-6">
+                      <motion.button
+                        whileHover={{ scale: 1.02 }}
+                        whileTap={{ scale: 0.98 }}
+                        type="submit"
+                        className="w-full bg-primary hover:bg-primary/90 text-black font-bold text-sm px-8 py-3.5 rounded-2xl flex items-center justify-center gap-2 shadow-[0_0_20px_rgba(57,255,20,0.15)] cursor-pointer"
                       >
-                        <option value="United Kingdom" className="bg-background text-white">United Kingdom</option>
-                        <option value="United States" className="bg-background text-white">United States</option>
-                        <option value="Canada" className="bg-background text-white">Canada</option>
-                        <option value="Germany" className="bg-background text-white">Germany</option>
-                      </select>
+                        Get Quote <ArrowRightIcon className="w-4 h-4" />
+                      </motion.button>
                     </div>
-                  </div>
+                  </motion.form>
+                )}
 
-                  <div className="w-full md:w-32 space-y-1.5">
-                    <label className="text-[10px] text-gray-500 font-bold tracking-widest uppercase pl-1">Weight</label>
-                    <div className="relative">
-                      <input 
-                        type="number" 
-                        value={calculatorForm.weight}
-                        onChange={(e) => setCalculatorForm((prev: any) => ({ ...prev, weight: parseFloat(e.target.value) || 1 }))}
-                        className="w-full bg-black/40 border border-white/5 rounded-2xl px-4 py-3.5 text-sm text-white font-medium focus:outline-none focus:border-primary/50 transition-colors" 
+                {activeHeroTab === 'track' && (
+                  <motion.form
+                    key="track"
+                    initial={{ opacity: 0, x: -10 }}
+                    animate={{ opacity: 1, x: 0 }}
+                    exit={{ opacity: 0, x: 10 }}
+                    transition={{ duration: 0.2 }}
+                    onSubmit={handleTrackSubmit}
+                    className="flex-1 w-full flex flex-col md:flex-row items-center gap-5 pt-2"
+                  >
+                    <div className="flex-1 w-full space-y-1.5">
+                      <label className="text-[10px] text-gray-500 font-bold tracking-widest uppercase pl-1">Tracking Number</label>
+                      <input
+                        type="text"
+                        placeholder="e.g. SPX-8294-0921"
+                        value={heroTrackId}
+                        onChange={(e) => setHeroTrackId(e.target.value.toUpperCase())}
+                        className="w-full bg-black/40 border border-white/5 rounded-2xl px-5 py-4 text-sm text-white font-medium focus:outline-none focus:border-primary/50 transition-colors"
                       />
-                      <span className="absolute right-4 top-1/2 -translate-y-1/2 text-xs text-gray-500 font-bold">kg</span>
+                      {heroTrackError && <p className="text-[10px] text-danger mt-1 absolute">{heroTrackError}</p>}
                     </div>
-                  </div>
+                    <div className="w-full md:w-auto mt-4 md:mt-0 pt-6">
+                      <motion.button
+                        whileHover={{ scale: 1.02 }}
+                        whileTap={{ scale: 0.98 }}
+                        type="submit"
+                        className="w-full bg-primary hover:bg-primary/90 text-black font-bold text-sm px-10 py-4 rounded-2xl shadow-[0_0_20px_rgba(57,255,20,0.15)] cursor-pointer"
+                      >
+                        Track Parcel
+                      </motion.button>
+                    </div>
+                  </motion.form>
+                )}
 
-                  <div className="w-full md:w-auto mt-4 md:mt-0 pt-6">
-                    <motion.button 
-                      whileHover={{ scale: 1.02 }}
-                      whileTap={{ scale: 0.98 }}
-                      type="submit"
-                      className="w-full bg-primary hover:bg-primary/90 text-black font-bold text-sm px-8 py-3.5 rounded-2xl flex items-center justify-center gap-2 shadow-[0_0_20px_rgba(57,255,20,0.15)] cursor-pointer"
-                    >
-                      Get Quote <ArrowRightIcon className="w-4 h-4" />
-                    </motion.button>
-                  </div>
-                </motion.form>
-              )}
-              
-              {activeHeroTab === 'track' && (
-                <motion.form 
-                  key="track"
-                  initial={{ opacity: 0, x: -10 }}
-                  animate={{ opacity: 1, x: 0 }}
-                  exit={{ opacity: 0, x: 10 }}
-                  transition={{ duration: 0.2 }}
-                  onSubmit={handleTrackSubmit} 
-                  className="flex-1 w-full flex flex-col md:flex-row items-center gap-5 pt-2"
-                >
-                  <div className="flex-1 w-full space-y-1.5">
-                    <label className="text-[10px] text-gray-500 font-bold tracking-widest uppercase pl-1">Tracking Number</label>
-                    <input 
-                      type="text" 
-                      placeholder="e.g. SPX-8294-0921"
-                      value={heroTrackId}
-                      onChange={(e) => setHeroTrackId(e.target.value.toUpperCase())}
-                      className="w-full bg-black/40 border border-white/5 rounded-2xl px-5 py-4 text-sm text-white font-medium focus:outline-none focus:border-primary/50 transition-colors"
-                    />
-                    {heroTrackError && <p className="text-[10px] text-danger mt-1 absolute">{heroTrackError}</p>}
-                  </div>
-                  <div className="w-full md:w-auto mt-4 md:mt-0 pt-6">
-                    <motion.button 
-                      whileHover={{ scale: 1.02 }}
-                      whileTap={{ scale: 0.98 }}
-                      type="submit"
-                      className="w-full bg-primary hover:bg-primary/90 text-black font-bold text-sm px-10 py-4 rounded-2xl shadow-[0_0_20px_rgba(57,255,20,0.15)] cursor-pointer"
-                    >
-                      Track Parcel
-                    </motion.button>
-                  </div>
-                </motion.form>
-              )}
-              
-              {activeHeroTab === 'pickup' && (
-                <motion.form 
-                  key="pickup"
-                  initial={{ opacity: 0, x: -10 }}
-                  animate={{ opacity: 1, x: 0 }}
-                  exit={{ opacity: 0, x: 10 }}
-                  transition={{ duration: 0.2 }}
-                  onSubmit={handlePickupSubmit} 
-                  className="flex-1 w-full flex flex-col md:flex-row items-center gap-5 pt-2"
-                >
-                  <div className="flex-1 w-full space-y-1.5">
-                    <label className="text-[10px] text-gray-500 font-bold tracking-widest uppercase pl-1">Pickup Address</label>
-                    <input 
-                      type="text" 
-                      value={heroPickup.address}
-                      onChange={e => setHeroPickup(p => ({...p, address: e.target.value}))}
-                      className="w-full bg-black/40 border border-white/5 rounded-2xl px-5 py-4 text-sm text-white font-medium focus:outline-none focus:border-primary/50 transition-colors"
-                    />
-                  </div>
-                  <div className="w-full md:w-48 space-y-1.5">
-                    <label className="text-[10px] text-gray-500 font-bold tracking-widest uppercase pl-1">Date</label>
-                    <input 
-                      type="date" 
-                      value={heroPickup.date}
-                      onChange={e => setHeroPickup(p => ({...p, date: e.target.value}))}
-                      className="w-full bg-black/40 border border-white/5 rounded-2xl px-4 py-4 text-sm text-white font-medium focus:outline-none focus:border-primary/50 transition-colors"
-                    />
-                  </div>
-                  <div className="w-full md:w-auto mt-4 md:mt-0 pt-6">
-                    <motion.button 
-                      whileHover={{ scale: 1.02 }}
-                      whileTap={{ scale: 0.98 }}
-                      type="submit"
-                      className="w-full bg-primary hover:bg-primary/90 text-black font-bold text-sm px-8 py-4 rounded-2xl shadow-[0_0_20px_rgba(57,255,20,0.15)] cursor-pointer"
-                    >
-                      Schedule Pickup
-                    </motion.button>
-                  </div>
-                </motion.form>
-              )}
-            </AnimatePresence>
-          </div>
+                {activeHeroTab === 'pickup' && (
+                  <motion.form
+                    key="pickup"
+                    initial={{ opacity: 0, x: -10 }}
+                    animate={{ opacity: 1, x: 0 }}
+                    exit={{ opacity: 0, x: 10 }}
+                    transition={{ duration: 0.2 }}
+                    onSubmit={handlePickupSubmit}
+                    className="flex-1 w-full flex flex-col md:flex-row items-center gap-5 pt-2"
+                  >
+                    <div className="flex-1 w-full space-y-1.5">
+                      <label className="text-[10px] text-gray-500 font-bold tracking-widest uppercase pl-1">Pickup Address</label>
+                      <input 
+                        type="text"
+                        value={heroPickup.address}
+                        onChange={e => setHeroPickup(p => ({...p, address: e.target.value}))}
+                        className="w-full bg-black/40 border border-white/5 rounded-2xl px-5 py-4 text-sm text-white font-medium focus:outline-none focus:border-primary/50 transition-colors"
+                      />
+                    </div>
+                    <div className="w-full md:w-48 space-y-1.5">
+                      <label className="text-[10px] text-gray-500 font-bold tracking-widest uppercase pl-1">Date</label>
+                      <input
+                        type="date"
+                        value={heroPickup.date}
+                        onChange={e => setHeroPickup(p => ({...p, date: e.target.value}))}
+                        className="w-full bg-black/40 border border-white/5 rounded-2xl px-4 py-4 text-sm text-white font-medium focus:outline-none focus:border-primary/50 transition-colors"
+                      />
+                    </div>
+                    <div className="w-full md:w-auto mt-4 md:mt-0 pt-6">
+                      <motion.button
+                        whileHover={{ scale: 1.02 }}
+                        whileTap={{ scale: 0.98 }}
+                        type="submit"
+                        className="w-full bg-primary hover:bg-primary/90 text-black font-bold text-sm px-8 py-4 rounded-2xl shadow-[0_0_20px_rgba(57,255,20,0.15)] cursor-pointer"
+                      >
+                        Schedule Pickup
+                      </motion.button>
+                    </div>
+                  </motion.form>
+                )}
+              </AnimatePresence>
+            </div>
+          </ThreeDTilt>
         </motion.div>
       </motion.div>
 
-      {/* 2. STATS OVERVIEW - LIQUID GLASS STYLE */}
+      {/* 2. STATS OVERVIEW - INTERACTIVE 3D CARDS */}
       <motion.div 
         variants={containerVariants}
         initial="hidden"
         whileInView="visible"
         viewport={{ once: true, margin: '-50px' }}
-        className="grid grid-cols-2 md:grid-cols-4 gap-4"
+        className="grid grid-cols-2 md:grid-cols-4 gap-4 z-10 relative"
       >
         {stats.map(s => (
-          <motion.div 
-            variants={itemVariants} 
-            whileHover={{ y: -5 }}
-            key={s.label} 
-            className="p-8 text-center flex flex-col justify-center items-center bg-white/[0.02] border border-white/[0.05] rounded-3xl backdrop-blur-xl"
-          >
-            <h3 className="text-4xl md:text-5xl font-black text-white font-display mb-2">{s.value}</h3>
-            <p className="text-xs text-gray-400 uppercase font-bold tracking-widest">{s.label}</p>
-          </motion.div>
+          <ThreeDTilt maxTilt={20} scale={1.05} key={s.label}>
+            <div
+              className="p-8 text-center flex flex-col justify-center items-center bg-white/[0.02] border border-white/[0.05] rounded-3xl backdrop-blur-xl h-full w-full"
+            >
+              <h3 className="text-4xl md:text-5xl font-black text-white font-display mb-2">{s.value}</h3>
+              <p className="text-xs text-gray-400 uppercase font-bold tracking-widest">{s.label}</p>
+            </div>
+          </ThreeDTilt>
         ))}
       </motion.div>
 
@@ -367,7 +373,7 @@ export default function LandingPage() {
         initial={{ opacity: 0 }}
         whileInView={{ opacity: 1 }}
         viewport={{ once: true, margin: '-50px' }}
-        className="max-w-5xl mx-auto py-10 border-y border-white/5 bg-white/[0.01]"
+        className="max-w-5xl mx-auto py-10 border-y border-white/5 bg-white/[0.01] z-10 relative"
       >
         <p className="text-center text-[10px] font-bold text-gray-500 uppercase tracking-widest mb-10">Our Trusted Shipping Partners</p>
         <div className="flex flex-wrap items-center justify-center gap-6 md:gap-10 opacity-90 px-4">
@@ -378,15 +384,15 @@ export default function LandingPage() {
             { id: 'aramex', src: '/courier badges/aramex.png', alt: 'Aramex' },
             { id: 'ems', src: '/courier badges/ems.png', alt: 'EMS' }
           ].map(partner => (
-            <div key={partner.id} className="w-24 h-16 md:w-32 md:h-20 flex items-center justify-center glass-panel rounded-2xl overflow-hidden p-3 hover:scale-105 transition-transform duration-300">
+            <ThreeDTilt maxTilt={15} scale={1.08} key={partner.id} className="w-24 h-16 md:w-32 md:h-20 flex items-center justify-center glass-panel rounded-2xl overflow-hidden p-3 shadow-md">
               <img src={partner.src} alt={partner.alt} className="w-full h-full object-contain grayscale hover:grayscale-0 transition-all duration-300 drop-shadow-md" />
-            </div>
+            </ThreeDTilt>
           ))}
         </div>
       </motion.div>
 
-      {/* 2.75 HOW IT WORKS */}
-      <div className="space-y-10 mt-16 max-w-6xl mx-auto px-4 md:px-0">
+      {/* 2.75 HOW IT WORKS with interactive tilted steps */}
+      <div className="space-y-10 mt-16 max-w-6xl mx-auto px-4 md:px-0 z-10 relative">
         <div className="text-center space-y-4">
           <span className="inline-flex items-center gap-2 bg-primary/10 text-primary font-bold text-xs px-4 py-1.5 rounded-full uppercase tracking-wider border border-primary/20">
             Process
@@ -402,27 +408,26 @@ export default function LandingPage() {
             { step: '3', title: 'We Pick Up', desc: 'We collect your package from your specified location across Nigeria.' },
             { step: '4', title: 'Ship & Track', desc: 'Package is shipped and tracked in real-time via the carrier website.' }
           ].map((s, i) => (
-            <motion.div 
-              key={s.step}
-              initial={{ opacity: 0, y: 20 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true }}
-              transition={{ delay: i * 0.1 }}
-              className="bg-white/[0.02] border border-white/[0.05] rounded-3xl p-6 relative overflow-hidden group hover:bg-white/[0.04] transition-colors"
-            >
-              <div className="absolute top-0 right-0 w-24 h-24 bg-primary/10 rounded-full blur-[40px] pointer-events-none group-hover:bg-primary/20 transition-colors" />
-              <div className="w-12 h-12 rounded-full bg-primary flex items-center justify-center text-black font-black text-xl mb-6 shadow-glow">
-                {s.step}
+            <ThreeDTilt maxTilt={15} scale={1.03} key={s.step} className="h-full">
+              <div
+                className="bg-white/[0.02] border border-white/[0.05] rounded-3xl p-6 relative overflow-hidden group hover:bg-white/[0.04] transition-colors h-full flex flex-col justify-between"
+              >
+                <div className="absolute top-0 right-0 w-24 h-24 bg-primary/10 rounded-full blur-[40px] pointer-events-none group-hover:bg-primary/20 transition-colors" />
+                <div>
+                  <div className="w-12 h-12 rounded-full bg-primary flex items-center justify-center text-black font-black text-xl mb-6 shadow-glow">
+                    {s.step}
+                  </div>
+                  <h4 className="text-lg font-bold text-white mb-2 font-display">{s.title}</h4>
+                </div>
+                <p className="text-xs text-gray-400 leading-relaxed mt-4">{s.desc}</p>
               </div>
-              <h4 className="text-lg font-bold text-white mb-2 font-display">{s.title}</h4>
-              <p className="text-xs text-gray-400 leading-relaxed">{s.desc}</p>
-            </motion.div>
+            </ThreeDTilt>
           ))}
         </div>
       </div>
 
       {/* 3. BENTO GRID FEATURES (WHY US) */}
-      <div className="space-y-10 mt-24 max-w-6xl mx-auto px-4 md:px-0">
+      <div className="space-y-10 mt-24 max-w-6xl mx-auto px-4 md:px-0 z-10 relative">
         <div className="text-center space-y-4">
           <span className="inline-flex items-center gap-2 bg-primary/10 text-primary font-bold text-xs px-4 py-1.5 rounded-full uppercase tracking-wider border border-primary/20">
             Why Us
@@ -439,103 +444,115 @@ export default function LandingPage() {
           className="grid grid-cols-1 md:grid-cols-3 gap-6 auto-rows-[250px]"
         >
           {/* Card 1: Spans 2 columns */}
-          <motion.div variants={itemVariants} className="md:col-span-2 bg-gradient-to-br from-[#0D1117] to-background border border-white/[0.05] rounded-3xl p-8 relative overflow-hidden group">
-            <div className="relative z-10 w-2/3 space-y-4">
-              <div className="w-12 h-12 bg-primary/10 border border-primary/20 rounded-2xl flex items-center justify-center text-primary mb-2 shadow-[0_0_20px_rgba(57,255,20,0.15)]">
-                <Globe2Icon className="w-6 h-6" />
+          <ThreeDTilt maxTilt={8} scale={1.02} className="md:col-span-2 h-full">
+            <div className="bg-gradient-to-br from-[#0D1117] to-background border border-white/[0.05] rounded-3xl p-8 relative overflow-hidden group h-full">
+              <div className="relative z-10 w-2/3 space-y-4">
+                <div className="w-12 h-12 bg-primary/10 border border-primary/20 rounded-2xl flex items-center justify-center text-primary mb-2 shadow-[0_0_20px_rgba(57,255,20,0.15)]">
+                  <Globe2Icon className="w-6 h-6" />
+                </div>
+                <h4 className="text-2xl font-bold text-white font-display">Global Network, Local Expertise</h4>
+                <p className="text-sm text-gray-400 leading-relaxed">Fast and reliable delivery worldwide. We reach over 190+ countries with our negotiated carrier rates. Whether it's London, New York, or Beijing, your package arrives safely.</p>
               </div>
-              <h4 className="text-2xl font-bold text-white font-display">Global Network, Local Expertise</h4>
-              <p className="text-sm text-gray-400 leading-relaxed">Fast and reliable delivery worldwide. We reach over 190+ countries with our negotiated carrier rates. Whether it's London, New York, or Beijing, your package arrives safely.</p>
+              <div className="absolute -bottom-10 -right-10 w-[400px] h-[300px] opacity-30 group-hover:opacity-50 transition-opacity duration-700 pointer-events-none">
+                <InteractiveMap className="bg-transparent border-none shadow-none" markers={[{ name: "London", coordinates: [-0.12, 51.5], id: "lon" }, { name: "New York", coordinates: [-74.0, 40.7], id: "nyc" }, { name: "Beijing", coordinates: [116.4, 39.9], id: "pek" }]} />
+              </div>
             </div>
-            <div className="absolute -bottom-10 -right-10 w-[400px] h-[300px] opacity-30 group-hover:opacity-50 transition-opacity duration-700 pointer-events-none">
-              <InteractiveMap className="bg-transparent border-none shadow-none" markers={[{ name: "London", coordinates: [-0.12, 51.5], id: "lon" }, { name: "New York", coordinates: [-74.0, 40.7], id: "nyc" }, { name: "Beijing", coordinates: [116.4, 39.9], id: "pek" }]} />
-            </div>
-          </motion.div>
+          </ThreeDTilt>
 
           {/* Card 2 */}
-          <motion.div variants={itemVariants} className="bg-white/[0.02] border border-white/[0.05] rounded-3xl p-8 flex flex-col justify-center items-center text-center hover:bg-white/[0.04] transition-colors">
-            <div className="w-12 h-12 bg-white/5 border border-white/10 rounded-2xl flex items-center justify-center text-white mb-6">
-              <CalculatorIcon className="w-6 h-6" />
+          <ThreeDTilt maxTilt={15} scale={1.03}>
+            <div className="bg-white/[0.02] border border-white/[0.05] rounded-3xl p-8 flex flex-col justify-center items-center text-center hover:bg-white/[0.04] transition-colors h-full">
+              <div className="w-12 h-12 bg-white/5 border border-white/10 rounded-2xl flex items-center justify-center text-white mb-6">
+                <CalculatorIcon className="w-6 h-6" />
+              </div>
+              <h4 className="text-lg font-bold text-white mb-2">Transparent Pricing</h4>
+              <p className="text-xs text-gray-400 leading-relaxed">Transparent pricing, no hidden fees. Save up to 55% with our aggregate contract rates on premium couriers.</p>
             </div>
-            <h4 className="text-lg font-bold text-white mb-2">Transparent Pricing</h4>
-            <p className="text-xs text-gray-400 leading-relaxed">Transparent pricing, no hidden fees. Save up to 55% with our aggregate contract rates on premium couriers.</p>
-          </motion.div>
+          </ThreeDTilt>
 
           {/* Card 3 */}
-          <motion.div variants={itemVariants} className="bg-white/[0.02] border border-white/[0.05] rounded-3xl p-8 flex flex-col justify-center items-center text-center hover:bg-white/[0.04] transition-colors">
-            <div className="w-12 h-12 bg-white/5 border border-white/10 rounded-2xl flex items-center justify-center text-white mb-6">
-              <TruckIcon className="w-6 h-6" />
+          <ThreeDTilt maxTilt={15} scale={1.03}>
+            <div className="bg-white/[0.02] border border-white/[0.05] rounded-3xl p-8 flex flex-col justify-center items-center text-center hover:bg-white/[0.04] transition-colors h-full">
+              <div className="w-12 h-12 bg-white/5 border border-white/10 rounded-2xl flex items-center justify-center text-white mb-6">
+                <TruckIcon className="w-6 h-6" />
+              </div>
+              <h4 className="text-lg font-bold text-white mb-2">Door Pickup</h4>
+              <p className="text-xs text-gray-400 leading-relaxed">We pick up from your doorstep anywhere in Nigeria within hours. Dedicated customer support team.</p>
             </div>
-            <h4 className="text-lg font-bold text-white mb-2">Door Pickup</h4>
-            <p className="text-xs text-gray-400 leading-relaxed">We pick up from your doorstep anywhere in Nigeria within hours. Dedicated customer support team.</p>
-          </motion.div>
+          </ThreeDTilt>
 
           {/* Card 4: Spans 2 columns */}
-          <motion.div variants={itemVariants} className="md:col-span-2 bg-white/[0.02] border border-white/[0.05] rounded-3xl p-8 flex flex-col md:flex-row items-center gap-8 hover:bg-white/[0.04] transition-colors overflow-hidden">
-            <div className="flex-1 space-y-4 relative z-10">
-              <div className="w-12 h-12 bg-white/5 border border-white/10 rounded-2xl flex items-center justify-center text-white mb-2">
-                <ShieldCheckIcon className="w-6 h-6" />
+          <ThreeDTilt maxTilt={8} scale={1.02} className="md:col-span-2 h-full">
+            <div className="bg-white/[0.02] border border-white/[0.05] rounded-3xl p-8 flex flex-col md:flex-row items-center gap-8 hover:bg-white/[0.04] transition-colors overflow-hidden h-full">
+              <div className="flex-1 space-y-4 relative z-10">
+                <div className="w-12 h-12 bg-white/5 border border-white/10 rounded-2xl flex items-center justify-center text-white mb-2">
+                  <ShieldCheckIcon className="w-6 h-6" />
+                </div>
+                <h4 className="text-2xl font-bold text-white font-display">Safe, Secure Handling</h4>
+                <p className="text-sm text-gray-400 leading-relaxed">Real-time tracking via official carriers. Secure handling of your packages. From fragile items to important documents, we treat every shipment with the utmost care.</p>
               </div>
-              <h4 className="text-2xl font-bold text-white font-display">Safe, Secure Handling</h4>
-              <p className="text-sm text-gray-400 leading-relaxed">Real-time tracking via official carriers. Secure handling of your packages. From fragile items to important documents, we treat every shipment with the utmost care.</p>
+              <div className="w-full md:w-5/12 -mr-8 -mb-16">
+                <img src="/cartons.png.png" alt="Cartons" className="w-full h-auto object-contain drop-shadow-[0_0_30px_rgba(0,0,0,0.8)] opacity-90 scale-125" />
+              </div>
             </div>
-            <div className="w-full md:w-5/12 -mr-8 -mb-16">
-              <img src="/cartons.png.png" alt="Cartons" className="w-full h-auto object-contain drop-shadow-[0_0_30px_rgba(0,0,0,0.8)] opacity-90 scale-125" />
-            </div>
-          </motion.div>
+          </ThreeDTilt>
         </motion.div>
       </div>
 
-      {/* 4. LIVE UPDATES & TESTIMONIAL */}
+      {/* 4. LIVE UPDATES & TESTIMONIAL with 3D Depth layouts */}
       <motion.div 
         initial={{ opacity: 0, y: 30 }}
         whileInView={{ opacity: 1, y: 0 }}
         viewport={{ once: true, margin: '-50px' }}
         transition={{ type: 'spring', stiffness: 300, damping: 24 }}
-        className="grid grid-cols-1 lg:grid-cols-5 gap-6 text-left items-stretch max-w-6xl mx-auto"
+        className="grid grid-cols-1 lg:grid-cols-5 gap-6 text-left items-stretch max-w-6xl mx-auto z-10 relative"
       >
         
         {/* Live shipments scroll (Spans 2/5) */}
-        <div className="lg:col-span-2 bg-white/[0.02] border border-white/[0.05] backdrop-blur-xl rounded-3xl p-8 flex flex-col justify-between hover:border-white/10 transition-colors">
-          <div>
-            <div className="flex items-center gap-3 border-b border-white/5 pb-4 mb-5">
-              <span className="w-2.5 h-2.5 rounded-full bg-primary animate-pulse shadow-glow"></span>
-              <h3 className="text-xs font-bold text-white uppercase tracking-widest">Live Network Status</h3>
-            </div>
-            <div className="space-y-4">
-              {liveUpdates.map((item, idx) => (
-                <div key={idx} className="flex justify-between items-center text-sm border-b border-white/[0.02] pb-3 last:border-0 last:pb-0">
-                  <div className="flex items-center gap-3">
-                    <CountryFlag countryCode={item.code} size="sm" />
-                    <span className="text-white/90 font-medium">{item.text}</span>
+        <ThreeDTilt maxTilt={10} scale={1.02} className="lg:col-span-2 h-full">
+          <div className="bg-white/[0.02] border border-white/[0.05] backdrop-blur-xl rounded-3xl p-8 flex flex-col justify-between hover:border-white/10 transition-colors h-full">
+            <div>
+              <div className="flex items-center gap-3 border-b border-white/5 pb-4 mb-5">
+                <span className="w-2.5 h-2.5 rounded-full bg-primary animate-pulse shadow-glow"></span>
+                <h3 className="text-xs font-bold text-white uppercase tracking-widest">Live Network Status</h3>
+              </div>
+              <div className="space-y-4">
+                {liveUpdates.map((item, idx) => (
+                  <div key={idx} className="flex justify-between items-center text-sm border-b border-white/[0.02] pb-3 last:border-0 last:pb-0">
+                    <div className="flex items-center gap-3">
+                      <CountryFlag countryCode={item.code} size="sm" />
+                      <span className="text-white/90 font-medium">{item.text}</span>
+                    </div>
+                    <span className="text-[10px] text-gray-500 font-medium whitespace-nowrap">{item.time}</span>
                   </div>
-                  <span className="text-[10px] text-gray-500 font-medium whitespace-nowrap">{item.time}</span>
-                </div>
-              ))}
-            </div>
-          </div>
-        </div>
-
-        {/* Customer testimonial & Delivery Professional (Spans 3/5) */}
-        <div className="lg:col-span-3 bg-gradient-to-br from-[#0D1117] to-background border border-white/[0.05] rounded-3xl p-8 flex flex-col md:flex-row items-center gap-8 relative overflow-hidden group">
-          <div className="absolute top-0 right-0 w-64 h-64 bg-primary/5 rounded-full blur-[80px] pointer-events-none group-hover:bg-primary/10 transition-colors duration-1000" />
-          
-          <img src="/model1.png.png" alt="Delivery professional" className="w-48 h-auto object-contain rounded-2xl drop-shadow-2xl relative z-10 -ml-4 -mt-16" />
-          
-          <div className="flex-1 space-y-5 relative z-10">
-            <h4 className="text-[10px] font-bold text-primary uppercase tracking-widest">Client Testimonial</h4>
-            <p className="text-sm md:text-base text-gray-300 italic leading-relaxed font-display">
-              "Spatial Express made my international shipping experience so easy. I was able to book DHL courier pickups from my salon in Port Harcourt, pay with Paystack, and track it straight to Heathrow. Truly seamless!"
-            </p>
-            <div className="flex items-center gap-4">
-              <div className="w-10 h-10 rounded-full bg-white/10 border border-white/20" />
-              <div>
-                <p className="text-sm font-bold text-white">Chloe Okafor</p>
-                <p className="text-[10px] text-gray-500 font-bold uppercase tracking-wider">Business Owner</p>
+                ))}
               </div>
             </div>
           </div>
-        </div>
+        </ThreeDTilt>
+
+        {/* Customer testimonial & Delivery Professional (Spans 3/5) */}
+        <ThreeDTilt maxTilt={8} scale={1.02} className="lg:col-span-3 h-full">
+          <div className="bg-gradient-to-br from-[#0D1117] to-background border border-white/[0.05] rounded-3xl p-8 flex flex-col md:flex-row items-center gap-8 relative overflow-hidden group h-full">
+            <div className="absolute top-0 right-0 w-64 h-64 bg-primary/5 rounded-full blur-[80px] pointer-events-none group-hover:bg-primary/10 transition-colors duration-1000" />
+
+            <img src="/model1.png.png" alt="Delivery professional" className="w-48 h-auto object-contain rounded-2xl drop-shadow-2xl relative z-10 -ml-4 -mt-16" />
+
+            <div className="flex-1 space-y-5 relative z-10">
+              <h4 className="text-[10px] font-bold text-primary uppercase tracking-widest">Client Testimonial</h4>
+              <p className="text-sm md:text-base text-gray-300 italic leading-relaxed font-display">
+                "Spatial Express made my international shipping experience so easy. I was able to book DHL courier pickups from my salon in Port Harcourt, pay with Paystack, and track it straight to Heathrow. Truly seamless!"
+              </p>
+              <div className="flex items-center gap-4">
+                <div className="w-10 h-10 rounded-full bg-white/10 border border-white/20" />
+                <div>
+                  <p className="text-sm font-bold text-white">Chloe Okafor</p>
+                  <p className="text-[10px] text-gray-500 font-bold uppercase tracking-wider">Business Owner</p>
+                </div>
+              </div>
+            </div>
+          </div>
+        </ThreeDTilt>
       </motion.div>
 
       {/* 5. FAQ SECTION */}
@@ -544,7 +561,7 @@ export default function LandingPage() {
         whileInView={{ opacity: 1, y: 0 }}
         viewport={{ once: true, margin: '-50px' }}
         transition={{ type: 'spring', stiffness: 300, damping: 24 }}
-        className="max-w-3xl mx-auto space-y-6"
+        className="max-w-3xl mx-auto space-y-6 z-10 relative"
       >
         <div className="text-center mb-10">
           <h3 className="text-3xl font-black text-white font-display">Common Questions</h3>
@@ -554,7 +571,7 @@ export default function LandingPage() {
           {faqs.map((faq, index) => {
             const isOpen = activeFaq === index
             return (
-              <motion.div 
+              <div
                 key={index} 
                 className="bg-white/[0.02] border border-white/[0.05] rounded-2xl overflow-hidden"
               >
@@ -577,46 +594,50 @@ export default function LandingPage() {
                     </motion.div>
                   )}
                 </AnimatePresence>
-              </motion.div>
+              </div>
             )
           })}
         </div>
       </motion.div>
 
-      {/* 6. READY TO SHIP CTA */}
+      {/* 6. READY TO SHIP CTA with premium isometric tilt container */}
       <motion.div 
         initial={{ opacity: 0, scale: 0.95 }}
         whileInView={{ opacity: 1, scale: 1 }}
         viewport={{ once: true, margin: '-50px' }}
         transition={{ type: 'spring', stiffness: 300, damping: 24 }}
-        className="max-w-5xl mx-auto bg-gradient-to-r from-[#0D1117] to-background border border-white/[0.05] rounded-[32px] p-10 md:p-16 flex flex-col md:flex-row items-center gap-12 justify-between relative overflow-hidden mt-20 shadow-2xl"
+        className="max-w-5xl mx-auto z-10 relative mt-20"
       >
-        <div className="absolute top-0 right-0 w-1/2 h-full bg-gradient-to-l from-primary/[0.03] to-transparent pointer-events-none" />
-        
-        <div className="flex-1 space-y-6 relative z-10 text-left">
-          <h3 className="text-4xl md:text-5xl font-black text-white font-display tracking-tight leading-tight">Ready to Ship <br/><span className="text-primary italic">Today?</span></h3>
-          <p className="text-sm text-gray-400 max-w-md leading-relaxed">
-            Get the best shipping rates in seconds. Book dispatch riders, calculate tariffs, and clear customs instantly.
-          </p>
-          <motion.button 
-            whileHover={{ scale: 1.05 }}
-            whileTap={{ scale: 0.95 }}
-            onClick={() => {
-              setActiveView('calculator')
-              window.scrollTo({ top: 0, behavior: 'smooth' })
-            }}
-            className="mt-4 bg-primary hover:bg-primary/90 text-black font-extrabold text-sm px-8 py-4 rounded-2xl shadow-[0_0_30px_rgba(57,255,20,0.2)] transition-all cursor-pointer border-none inline-flex items-center gap-2"
-          >
-            Calculate Shipping <ArrowRightIcon className="w-4 h-4" />
-          </motion.button>
-        </div>
-        
-        <div className="w-full md:w-5/12 relative z-10 hidden md:block">
-          <div className="relative rounded-2xl overflow-hidden border border-white/5 shadow-[0_0_50px_rgba(57,255,20,0.05)]">
-            <img src="/Lady_with_gorgeous_smile_202607070210_2.jpeg" alt="Delivery scene" className="w-full h-auto object-cover scale-105 opacity-90" />
-            <div className="absolute inset-0 bg-gradient-to-tr from-[#050608]/90 to-transparent mix-blend-multiply" />
+        <ThreeDTilt maxTilt={5} scale={1.01} className="w-full">
+          <div className="bg-gradient-to-r from-[#0D1117] to-background border border-white/[0.05] rounded-[32px] p-10 md:p-16 flex flex-col md:flex-row items-center gap-12 justify-between relative overflow-hidden shadow-2xl">
+            <div className="absolute top-0 right-0 w-1/2 h-full bg-gradient-to-l from-primary/[0.03] to-transparent pointer-events-none" />
+
+            <div className="flex-1 space-y-6 relative z-10 text-left">
+              <h3 className="text-4xl md:text-5xl font-black text-white font-display tracking-tight leading-tight">Ready to Ship <br/><span className="text-primary italic">Today?</span></h3>
+              <p className="text-sm text-gray-400 max-w-md leading-relaxed">
+                Get the best shipping rates in seconds. Book dispatch riders, calculate tariffs, and clear customs instantly.
+              </p>
+              <motion.button
+                whileHover={{ scale: 1.05 }}
+                whileTap={{ scale: 0.95 }}
+                onClick={() => {
+                  setActiveView('calculator')
+                  window.scrollTo({ top: 0, behavior: 'smooth' })
+                }}
+                className="mt-4 bg-primary hover:bg-primary/90 text-black font-extrabold text-sm px-8 py-4 rounded-2xl shadow-[0_0_30px_rgba(57,255,20,0.2)] transition-all cursor-pointer border-none inline-flex items-center gap-2"
+              >
+                Calculate Shipping <ArrowRightIcon className="w-4 h-4" />
+              </motion.button>
+            </div>
+
+            <div className="w-full md:w-5/12 relative z-10 hidden md:block">
+              <div className="relative rounded-2xl overflow-hidden border border-white/5 shadow-[0_0_50px_rgba(57,255,20,0.05)]">
+                <img src="/Lady_with_gorgeous_smile_202607070210_2.jpeg" alt="Delivery scene" className="w-full h-auto object-cover scale-105 opacity-90" />
+                <div className="absolute inset-0 bg-gradient-to-tr from-[#050608]/90 to-transparent mix-blend-multiply" />
+              </div>
+            </div>
           </div>
-        </div>
+        </ThreeDTilt>
       </motion.div>
 
       {/* Floating WhatsApp Support Button */}
