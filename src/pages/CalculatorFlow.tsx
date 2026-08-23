@@ -196,6 +196,18 @@ export default function CalculatorFlow() {
   // Step 6: Receipt
   const [waybillNo] = useState(generateWaybill)
 
+  // Currency State
+  const [currency, setCurrency] = useState<'NGN' | 'USD'>('NGN')
+  const USD_RATE = 1500
+
+  const formatPrice = (ngnAmount: number) => {
+    if (currency === 'USD') {
+      const usd = ngnAmount / USD_RATE
+      return `$${usd.toFixed(2)}`
+    }
+    return `₦${ngnAmount.toLocaleString()}`
+  }
+
   // ─── Computed ───
   const weight = parseFloat(tab === 'intl' ? intlWeight : localWeight) || 0
   const speedObj = SPEED_OPTIONS.find(s => s.id === selectedSpeed)
@@ -222,7 +234,7 @@ export default function CalculatorFlow() {
 
   const speedPriceLabel = (courier: typeof COURIERS[0]) => {
     const p = computePrice(courier.baseRate)
-    return `₦${p.toLocaleString()}`
+    return formatPrice(p)
   }
 
   const goStep = (n: number) => {
@@ -245,9 +257,36 @@ export default function CalculatorFlow() {
               Step {step + 1} of 6 — {STEPS[step]}
             </p>
           </div>
-          <span className="text-[10px] font-bold text-primary bg-primary/10 px-3 py-1 rounded-full border border-primary/20 uppercase tracking-wider">
-            {STEPS[step]}
-          </span>
+          
+          <div className="flex items-center gap-2">
+            {/* Currency Toggle */}
+            <div className="inline-flex bg-black/40 border border-white/10 rounded-lg p-0.5 text-[10px] font-mono">
+              <button
+                type="button"
+                onClick={() => setCurrency('NGN')}
+                className={cn(
+                  "px-2 py-0.5 rounded font-bold transition-all cursor-pointer",
+                  currency === 'NGN' ? "bg-primary text-black" : "text-muted hover:text-white"
+                )}
+              >
+                ₦ NGN
+              </button>
+              <button
+                type="button"
+                onClick={() => setCurrency('USD')}
+                className={cn(
+                  "px-2 py-0.5 rounded font-bold transition-all cursor-pointer",
+                  currency === 'USD' ? "bg-primary text-black" : "text-muted hover:text-white"
+                )}
+              >
+                $ USD
+              </button>
+            </div>
+
+            <span className="text-[10px] font-bold text-primary bg-primary/10 px-3 py-1 rounded-full border border-primary/20 uppercase tracking-wider">
+              {STEPS[step]}
+            </span>
+          </div>
         </div>
 
         {/* Progress track */}
@@ -525,8 +564,9 @@ export default function CalculatorFlow() {
                     </div>
                     {/* Price */}
                     <div className="text-right flex-shrink-0">
-                      <p className="text-base font-black text-primary">₦{price.toLocaleString()}</p>
+                      <p className="text-base font-black text-primary">{formatPrice(price)}</p>
                       <p className="text-[10px] text-muted">total est.</p>
+                      <span className="text-[8px] text-primary font-mono block mt-0.5">99.4% SLA</span>
                     </div>
                   </motion.button>
                 )
@@ -582,7 +622,7 @@ export default function CalculatorFlow() {
                 ))}
                 <div className="flex justify-between px-5 py-4 bg-primary/5">
                   <span className="text-sm font-bold text-white">Total Amount</span>
-                  <span className="text-xl font-black text-primary">₦{grandTotal.toLocaleString()}</span>
+                  <span className="text-xl font-black text-primary">{formatPrice(grandTotal)}</span>
                 </div>
               </div>
             </div>

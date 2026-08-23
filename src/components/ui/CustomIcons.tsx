@@ -28,6 +28,8 @@ export const ChevronRightIcon = withPremiumStyle(LucideIcons.ChevronRight)
 export const ArrowRightIcon = withPremiumStyle(LucideIcons.ArrowRight)
 export const ArrowLeftIcon = withPremiumStyle(LucideIcons.ArrowLeft)
 export const SearchIcon = withPremiumStyle(LucideIcons.Search)
+export const SunIcon = withPremiumStyle(LucideIcons.Sun)
+export const MoonIcon = withPremiumStyle(LucideIcons.Moon)
 
 // ───────────────────────
 // Logistics & Shipping

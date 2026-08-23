@@ -165,33 +165,41 @@ export default function LandingPage() {
           transition={{ delay: 0.6, type: 'spring', stiffness: 200, damping: 20 }}
           className="relative z-10 w-full max-w-5xl mt-auto"
         >
-          {/* Tab Headers */}
-          <div className="flex items-center gap-8 mb-4 px-2">
-            {[
-              { id: 'quote', label: 'Quick Quote' },
-              { id: 'pickup', label: 'Book Pickup' },
-              { id: 'track', label: 'Track Parcel' }
-            ].map(tab => (
-              <button
-                key={tab.id}
-                onClick={() => {
-                  setActiveHeroTab(tab.id as any)
-                  setHeroTrackError('')
-                }}
-                className="relative font-semibold text-sm pb-2 transition-colors cursor-pointer outline-none"
-              >
-                <span className={cn("relative z-10", activeHeroTab === tab.id ? "text-white" : "text-gray-500 hover:text-gray-300")}>
-                  {tab.label}
-                </span>
-                {activeHeroTab === tab.id && (
-                  <motion.div 
-                    layoutId="heroTab"
-                    className="absolute left-0 right-0 bottom-0 h-[2px] bg-primary"
-                    transition={{ type: "spring", stiffness: 300, damping: 30 }}
-                  />
-                )}
-              </button>
-            ))}
+          {/* Tab Headers & SLA Trust Tag */}
+          <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 mb-4 px-2">
+            <div className="flex items-center gap-6 md:gap-8">
+              {[
+                { id: 'quote', label: 'Quick Quote' },
+                { id: 'pickup', label: 'Book Pickup' },
+                { id: 'track', label: 'Track Parcel' }
+              ].map(tab => (
+                <button
+                  key={tab.id}
+                  onClick={() => {
+                    setActiveHeroTab(tab.id as any)
+                    setHeroTrackError('')
+                  }}
+                  className="relative font-semibold text-sm pb-2 transition-colors cursor-pointer outline-none"
+                >
+                  <span className={cn("relative z-10", activeHeroTab === tab.id ? "text-text font-bold" : "text-text-secondary hover:text-text")}>
+                    {tab.label}
+                  </span>
+                  {activeHeroTab === tab.id && (
+                    <motion.div 
+                      layoutId="heroTab"
+                      className="absolute left-0 right-0 bottom-0 h-[2px] bg-primary"
+                      transition={{ type: "spring", stiffness: 300, damping: 30 }}
+                    />
+                  )}
+                </button>
+              ))}
+            </div>
+
+            {/* SLA Guarantee Pill */}
+            <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-primary/10 border border-primary/20 text-[10px] font-bold text-primary self-start sm:self-auto font-mono">
+              <ShieldCheckIcon className="w-3.5 h-3.5" />
+              <span>99.4% On-Time SLA Guarantee</span>
+            </div>
           </div>
           
           {/* Form Area */}
@@ -479,8 +487,8 @@ export default function LandingPage() {
               <h4 className="text-2xl font-bold text-white font-display">Safe, Secure Handling</h4>
               <p className="text-sm text-gray-400 leading-relaxed">Real-time tracking via official carriers. Secure handling of your packages. From fragile items to important documents, we treat every shipment with the utmost care.</p>
             </div>
-            <div className="w-full md:w-5/12 -mr-8 -mb-16">
-              <img src="/cartons.png.png" alt="Cartons" className="w-full h-auto object-contain drop-shadow-[0_0_30px_rgba(0,0,0,0.8)] opacity-90 scale-125" />
+            <div className="w-full md:w-5/12 -mr-8 -mb-16 max-h-56 md:max-h-none overflow-hidden flex items-center justify-center">
+              <img src="/cartons.png.png" alt="Cartons" className="w-full h-auto max-h-64 object-contain drop-shadow-[0_0_30px_rgba(0,0,0,0.8)] opacity-90 scale-110" />
             </div>
           </motion.div>
         </motion.div>
@@ -520,7 +528,9 @@ export default function LandingPage() {
         <div className="lg:col-span-3 bg-gradient-to-br from-[#0D1117] to-background border border-white/[0.05] rounded-3xl p-8 flex flex-col md:flex-row items-center gap-8 relative overflow-hidden group">
           <div className="absolute top-0 right-0 w-64 h-64 bg-primary/5 rounded-full blur-[80px] pointer-events-none group-hover:bg-primary/10 transition-colors duration-1000" />
           
-          <img src="/model1.png.png" alt="Delivery professional" className="w-48 h-auto object-contain rounded-2xl drop-shadow-2xl relative z-10 -ml-4 -mt-16" />
+          <div className="w-36 sm:w-48 shrink-0 flex items-center justify-center">
+            <img src="/model1.png.png" alt="Delivery professional" className="w-full h-auto max-h-56 sm:max-h-72 object-contain rounded-2xl drop-shadow-2xl relative z-10 -mt-8 sm:-mt-16" />
+          </div>
           
           <div className="flex-1 space-y-5 relative z-10">
             <h4 className="text-[10px] font-bold text-primary uppercase tracking-widest">Client Testimonial</h4>

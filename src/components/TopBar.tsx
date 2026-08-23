@@ -1,5 +1,5 @@
 import { useState, useRef, useEffect } from 'react'
-import { BellIcon, SearchIcon, UserIcon, ChevronDownIcon, CheckIcon, ShieldCheckIcon, HelpCircleIcon, PackageIcon, ArrowRightIcon, ShieldAlertIcon, GlobeIcon } from './ui/CustomIcons'
+import { BellIcon, SearchIcon, UserIcon, ChevronDownIcon, CheckIcon, ShieldCheckIcon, HelpCircleIcon, PackageIcon, ArrowRightIcon, ShieldAlertIcon, GlobeIcon, SunIcon, MoonIcon } from './ui/CustomIcons'
 import { useLogistics } from '../context/LogisticsContext'
 import { cn } from '../lib/utils'
 
@@ -14,7 +14,9 @@ export default function TopBar() {
     shipments,
     setSelectedTrackingId,
     currentUser,
-    setCurrentUser
+    setCurrentUser,
+    theme,
+    toggleTheme
   } = useLogistics()
 
   const [searchQuery, setSearchQuery] = useState('')
@@ -23,6 +25,7 @@ export default function TopBar() {
   const [showProfileMenu, setShowProfileMenu] = useState(false)
   
   const searchRef = useRef<HTMLDivElement>(null)
+  const searchInputRef = useRef<HTMLInputElement>(null)
   const notificationRef = useRef<HTMLDivElement>(null)
   const profileRef = useRef<HTMLDivElement>(null)
 
@@ -64,7 +67,7 @@ export default function TopBar() {
 
   const { portalLabel, viewLabel } = getBreadcrumbs()
 
-  // Handle outside clicks to close dropdowns
+  // Handle outside clicks to close dropdowns & global Ctrl+K shortcut
   useEffect(() => {
     function handleClickOutside(event: MouseEvent) {
       if (searchRef.current && !searchRef.current.contains(event.target as Node)) {
@@ -77,8 +80,21 @@ export default function TopBar() {
         setShowProfileMenu(false)
       }
     }
+
+    function handleKeyDown(e: KeyboardEvent) {
+      if ((e.ctrlKey || e.metaKey) && e.key.toLowerCase() === 'k') {
+        e.preventDefault()
+        searchInputRef.current?.focus()
+        setShowSearchResults(true)
+      }
+    }
+
     document.addEventListener('mousedown', handleClickOutside)
-    return () => document.removeEventListener('mousedown', handleClickOutside)
+    document.addEventListener('keydown', handleKeyDown)
+    return () => {
+      document.removeEventListener('mousedown', handleClickOutside)
+      document.removeEventListener('keydown', handleKeyDown)
+    }
   }, [])
 
   // Mock global search filter
@@ -125,6 +141,7 @@ export default function TopBar() {
           <div className="relative">
             <SearchIcon className="absolute left-3 top-2.5 w-4 h-4 text-muted" />
             <input
+              ref={searchInputRef}
               type="text"
               placeholder="Search tracking, invoice, client..."
               value={searchQuery}
@@ -133,8 +150,13 @@ export default function TopBar() {
                 setShowSearchResults(true)
               }}
               onFocus={() => setShowSearchResults(true)}
-              className="w-full bg-[#050608]/80 text-xs text-white pl-9 pr-4 py-2.5 rounded-lg border border-white/5 focus:border-primary/40 focus:ring-1 focus:ring-primary/40 focus:outline-none transition-all placeholder:text-muted"
+              className="w-full bg-[#050608]/80 text-xs text-white pl-9 pr-14 py-2.5 rounded-lg border border-white/5 focus:border-primary/40 focus:ring-1 focus:ring-primary/40 focus:outline-none transition-all placeholder:text-muted"
             />
+            <div className="absolute right-2.5 top-2.5 flex items-center pointer-events-none">
+              <kbd className="text-[9px] font-mono bg-white/10 dark:bg-white/10 light:bg-slate-200 border border-white/10 text-muted px-1.5 py-0.5 rounded">
+                ⌘K
+              </kbd>
+            </div>
           </div>
 
           {/* Search Result Dropdown */}
@@ -213,6 +235,19 @@ export default function TopBar() {
             </div>
           )}
         </div>
+
+        {/* Theme Toggle Button */}
+        <button
+          onClick={toggleTheme}
+          title={`Switch to ${theme === 'dark' ? 'Light' : 'Dark'} Mode`}
+          className="w-10 h-10 rounded-lg glass-button flex items-center justify-center cursor-pointer text-text-secondary hover:text-primary transition-colors shrink-0"
+        >
+          {theme === 'dark' ? (
+            <SunIcon className="w-4 h-4 text-warning" />
+          ) : (
+            <MoonIcon className="w-4 h-4 text-slate-700" />
+          )}
+        </button>
 
         {/* Real-time Notification Center */}
         <div ref={notificationRef} className="relative shrink-0">

@@ -1,5 +1,5 @@
 import { motion } from 'framer-motion'
-import { GlobeIcon, UserIcon, ShieldAlertIcon, LayoutDashboardIcon, CalculatorIcon, MapPinIcon, TruckIcon, HelpCircleIcon, InfoIcon, PhoneIcon, CalendarIcon, HistoryIcon, BellIcon, FileTextIcon, TrendingUpIcon, SlidersIcon, UsersIcon, CreditCardIcon, NetworkIcon, LayersIcon, LogOutIcon, ChevronDownIcon, ActivityIcon } from './ui/CustomIcons'
+import { GlobeIcon, UserIcon, ShieldAlertIcon, LayoutDashboardIcon, CalculatorIcon, MapPinIcon, TruckIcon, HelpCircleIcon, InfoIcon, PhoneIcon, CalendarIcon, HistoryIcon, BellIcon, FileTextIcon, TrendingUpIcon, SlidersIcon, UsersIcon, CreditCardIcon, NetworkIcon, LayersIcon, LogOutIcon, ChevronDownIcon, ActivityIcon, SunIcon, MoonIcon } from './ui/CustomIcons'
 import { useLogistics } from '../context/LogisticsContext'
 import { cn } from '../lib/utils'
 import { useState } from 'react'
@@ -12,7 +12,9 @@ export default function Sidebar() {
     setActiveView,
     couriers,
     notifications,
-    currentUser
+    currentUser,
+    theme,
+    toggleTheme
   } = useLogistics()
 
   const [pricingOpen, setPricingOpen] = useState(true)
@@ -314,8 +316,25 @@ export default function Sidebar() {
         )}
       </nav>
 
-      {/* Footer Info / Logout */}
-      <div className="p-4 border-t border-white/5 bg-background/25">
+      {/* Footer Info / Theme Switcher / Logout */}
+      <div className="p-4 border-t border-white/5 bg-background/25 space-y-2">
+        <button
+          onClick={toggleTheme}
+          className="w-full flex items-center justify-between px-3 py-2 rounded-lg text-xs font-semibold text-text-secondary hover:text-text hover:bg-white/5 border border-white/5 transition-colors cursor-pointer"
+        >
+          <div className="flex items-center gap-2">
+            {theme === 'dark' ? (
+              <SunIcon className="w-4 h-4 text-warning" />
+            ) : (
+              <MoonIcon className="w-4 h-4 text-slate-700" />
+            )}
+            <span>{theme === 'dark' ? 'Light Theme' : 'Dark Theme'}</span>
+          </div>
+          <span className="text-[10px] font-mono uppercase text-muted bg-white/5 px-2 py-0.5 rounded">
+            {theme}
+          </span>
+        </button>
+
         <button 
           onClick={() => {
             setActivePortal('public')

@@ -100,6 +100,11 @@ export interface UserInfo {
 }
 
 interface LogisticsContextType {
+  // Theme Management
+  theme: 'dark' | 'light'
+  setTheme: (theme: 'dark' | 'light') => void
+  toggleTheme: () => void
+
   // Navigation & View Mode
   activePortal: 'public' | 'customer' | 'admin'
   setActivePortal: (portal: 'public' | 'customer' | 'admin') => void
@@ -191,6 +196,28 @@ const initialCountries: Country[] = [
 export const LogisticsContext = createContext<LogisticsContextType | undefined>(undefined)
 
 export function LogisticsProvider({ children }: { children: ReactNode }) {
+  // Theme State with localStorage persistence
+  const [theme, setTheme] = useState<'dark' | 'light'>(() => {
+    const saved = localStorage.getItem('spatial_express_theme')
+    if (saved === 'light' || saved === 'dark') return saved
+    return 'dark'
+  })
+
+  useEffect(() => {
+    localStorage.setItem('spatial_express_theme', theme)
+    if (theme === 'light') {
+      document.documentElement.classList.add('light')
+      document.documentElement.classList.remove('dark')
+    } else {
+      document.documentElement.classList.add('dark')
+      document.documentElement.classList.remove('light')
+    }
+  }, [theme])
+
+  const toggleTheme = () => {
+    setTheme(prev => prev === 'dark' ? 'light' : 'dark')
+  }
+
   // Navigation & Workspace
   const [activePortal, setActivePortal] = useState<'public' | 'customer' | 'admin'>('public')
   const [activeView, setActiveView] = useState<string>('home')
@@ -793,6 +820,10 @@ export function LogisticsProvider({ children }: { children: ReactNode }) {
 
   return (
     <LogisticsContext.Provider value={{
+      theme,
+      setTheme,
+      toggleTheme,
+      
       activePortal,
       setActivePortal,
       activeView,

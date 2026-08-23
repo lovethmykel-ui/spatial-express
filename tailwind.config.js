@@ -1,22 +1,23 @@
 /** @type {import('tailwindcss').Config} */
 export default {
+  darkMode: 'class',
   content: ['./index.html', './src/**/*.{ts,tsx}'],
   theme: {
     extend: {
       colors: {
-        background: '#050608',
-        surface: '#0D1117', // Card Background
-        card: '#0D1117', // Card Background
-        'secondary-card': '#111827', // Secondary Card
-        primary: '#39FF14', // Neon Green
-        secondary: '#1DB954', // Medium Green
-        success: '#39FF14',
+        background: 'rgb(var(--color-background-rgb, 5 6 8) / <alpha-value>)',
+        surface: 'rgb(var(--color-surface-rgb, 13 17 23) / <alpha-value>)',
+        card: 'rgb(var(--color-card-rgb, 13 17 23) / <alpha-value>)',
+        'secondary-card': 'rgb(var(--color-secondary-card-rgb, 17 24 39) / <alpha-value>)',
+        primary: 'rgb(var(--color-primary-rgb, 57 255 20) / <alpha-value>)',
+        secondary: 'rgb(var(--color-secondary-rgb, 29 185 84) / <alpha-value>)',
+        success: '#10B981',
         warning: '#FACC15',
         danger: '#EF4444',
-        text: '#FFFFFF', // Primary Text
-        'text-secondary': '#B7BDC8', // Secondary Text
-        muted: '#9CA3AF', // Muted Text
-        border: 'rgba(255,255,255,0.06)',
+        text: 'rgb(var(--color-text-rgb, 255 255 255) / <alpha-value>)',
+        'text-secondary': 'rgb(var(--color-text-secondary-rgb, 183 189 200) / <alpha-value>)',
+        muted: 'rgb(var(--color-muted-rgb, 156 163 175) / <alpha-value>)',
+        border: 'var(--color-border, rgba(255,255,255,0.08))',
       },
       fontFamily: {
         display: ['"Playfair Display"', 'serif'],
@@ -26,7 +27,7 @@ export default {
       borderRadius: {
         sm: '8px',
         md: '12px',
-        lg: '20px', // 20px rounded corners specified
+        lg: '20px',
         xl: '24px',
         full: '9999px',
       },
