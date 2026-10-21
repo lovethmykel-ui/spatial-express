@@ -1,28 +1,47 @@
 export default function Terms() {
   return (
-    <div className="max-w-2xl">
-      <h1 className="font-display text-2xl mb-6">Terms of Service</h1>
-      <div className="space-y-4 text-sm text-muted leading-relaxed">
-        <p>Last updated: June 30, 2026</p>
-        <p>
-          Degen Toolkit provides informational tools only. Nothing on this site constitutes
-          financial, investment, legal, or tax advice. Cryptocurrency markets are volatile and
-          carry a risk of total loss — you are solely responsible for your own decisions.
-        </p>
-        <p>
-          Token risk scores shown on this site are generated from a simple, transparent
-          heuristic based on publicly available liquidity data. They are not a security audit
-          and should not be treated as a guarantee of safety or legitimacy.
-        </p>
-        <p>
-          Some links on this site, including in the Fees &amp; Yield comparison, are affiliate
-          links. We may earn a commission if you sign up through them, at no extra cost to you.
-          These are always labeled.
-        </p>
-        <p>
-          We reserve the right to update these terms or modify, suspend, or discontinue any
-          part of the site at any time.
-        </p>
+    <div className="max-w-3xl mx-auto py-8 text-left space-y-6">
+      <div className="border-b border-slate-200 pb-4">
+        <span className="text-[10px] font-bold text-primary uppercase tracking-widest bg-emerald-50 text-emerald-700 border border-emerald-200 px-3 py-1 rounded-full">Legal</span>
+        <h1 className="font-display text-3xl font-extrabold text-slate-900 tracking-tight mt-2">Terms of Service</h1>
+        <p className="text-xs text-slate-500 mt-1">Last updated: July 2026</p>
+      </div>
+
+      <div className="space-y-6 text-sm text-slate-600 leading-relaxed bg-white border border-slate-200/90 rounded-2xl p-6 md:p-8 shadow-sm">
+        <div className="space-y-2">
+          <h2 className="text-base font-bold text-slate-900">1. Acceptance of Terms</h2>
+          <p>
+            By accessing or using the Spatial Express Logistics platform, services, rate calculators, and tracking tools, you agree to be bound by these Terms of Service.
+          </p>
+        </div>
+
+        <div className="space-y-2">
+          <h2 className="text-base font-bold text-slate-900">2. Cargo Freight & Courier Services</h2>
+          <p>
+            Spatial Express acts as an aggregated logistics broker and freight forwarder connecting clients with licensed international carrier partners including DHL, FedEx, UPS, Aramex, and EMS. Rates displayed are estimated based on volumetric weight and real-time carrier tariff matrices.
+          </p>
+        </div>
+
+        <div className="space-y-2">
+          <h2 className="text-base font-bold text-slate-900">3. Customs Clearance & Declarations</h2>
+          <p>
+            Senders are responsible for declaring accurate contents, values, and complying with all import/export regulations. Spatial Express assists with customs paperwork brokerage, but customs duties levied by recipient nations remain the responsibility of designated payers.
+          </p>
+        </div>
+
+        <div className="space-y-2">
+          <h2 className="text-base font-bold text-slate-900">4. Prohibited & Hazardous Goods</h2>
+          <p>
+            Hazardous materials, illegal contraband, unauthorized lithium batteries, weapons, and perishable contraband prohibited by international aviation standards cannot be dispatched.
+          </p>
+        </div>
+
+        <div className="space-y-2">
+          <h2 className="text-base font-bold text-slate-900">5. Limitation of Liability & Insurance</h2>
+          <p>
+            Carrier transit liability follows Warsaw/Montreal convention rules unless comprehensive transit cargo insurance was added and paid for during booking checkout.
+          </p>
+        </div>
       </div>
     </div>
   )

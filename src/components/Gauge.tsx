@@ -15,15 +15,15 @@ export default function Gauge({ score, statusLabel, size = 140 }: GaugeProps) {
   const tone = clamped >= 75 ? 'success' : clamped >= 45 ? 'warning' : 'danger'
 
   const stroke = {
-    success: '#00E676',
-    warning: '#FFC107',
-    danger: '#FF4D6D',
+    success: '#16a34a',
+    warning: '#f59e0b',
+    danger: '#ef4444',
   }[tone]
 
   const textColor = {
-    success: 'text-success',
-    warning: 'text-warning',
-    danger: 'text-danger',
+    success: 'text-emerald-600',
+    warning: 'text-amber-600',
+    danger: 'text-rose-600',
   }[tone]
 
   return (
@@ -35,7 +35,7 @@ export default function Gauge({ score, statusLabel, size = 140 }: GaugeProps) {
             cy={size / 2}
             r={radius}
             fill="none"
-            stroke="rgba(255,255,255,0.05)"
+            stroke="#E2E8F0"
             strokeWidth={10}
           />
           <circle
@@ -52,11 +52,11 @@ export default function Gauge({ score, statusLabel, size = 140 }: GaugeProps) {
           />
         </svg>
         <div className="absolute inset-0 flex flex-col items-center justify-center">
-          <span className="font-display text-3xl font-bold leading-none text-white">{Math.round(clamped)}</span>
-          <span className="text-[10px] text-muted mt-1">/100</span>
+          <span className="font-display text-3xl font-bold leading-none text-slate-900">{Math.round(clamped)}</span>
+          <span className="text-[10px] text-slate-500 mt-1">/100</span>
         </div>
       </div>
-      <span className={cn('mt-2 text-sm font-medium tracking-wide font-display uppercase', textColor)}>
+      <span className={cn('mt-2 text-sm font-semibold tracking-wide font-display uppercase', textColor)}>
         {statusLabel}
       </span>
     </div>

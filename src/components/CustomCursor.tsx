@@ -92,9 +92,9 @@ export default function CustomCursor() {
         )
       })}
 
-      {/* Main Cursor (Neon Green Truck Vector) */}
+      {/* Main Cursor (Emerald Green Truck Vector) */}
       <motion.div
-        className="fixed top-0 left-0 pointer-events-none z-[9999] mix-blend-screen"
+        className="fixed top-0 left-0 pointer-events-none z-[9999]"
         style={{
           x: cursorX,
           y: cursorY,
@@ -108,27 +108,27 @@ export default function CustomCursor() {
           viewBox="0 0 32 24" 
           fill="none" 
           xmlns="http://www.w3.org/2000/svg"
-          className="filter drop-shadow-[0_0_6px_#39FF14]"
+          className="filter drop-shadow-[0_2px_6px_rgba(0,0,0,0.15)]"
         >
           {/* Truck Body */}
           <path 
             d="M2 4C2 2.89543 2.89543 2 4 2H18C19.1046 2 20 2.89543 20 4V16H2V4Z" 
-            fill="#050608" 
-            stroke="#39FF14" 
+            fill="#FFFFFF" 
+            stroke="#16a34a" 
             strokeWidth="1.5"
           />
           {/* Cab */}
           <path 
             d="M20 7H26.5858C27.1162 7 27.6249 7.21071 28 7.58579L30.4142 10C30.7893 10.3751 31 10.8838 31 11.4142V16H20V7Z" 
-            fill="#050608" 
-            stroke="#39FF14" 
+            fill="#FFFFFF" 
+            stroke="#16a34a" 
             strokeWidth="1.5"
           />
           {/* Window */}
           <path 
             d="M22 9H25.5L28 11.5V13.5H22V9Z" 
-            fill="rgba(57, 255, 20, 0.1)" 
-            stroke="#39FF14" 
+            fill="rgba(22, 163, 74, 0.2)" 
+            stroke="#16a34a" 
             strokeWidth="1"
           />
           
@@ -137,41 +137,41 @@ export default function CustomCursor() {
             cx="25.5" 
             cy="18.5" 
             r="3.5" 
-            fill="#050608" 
-            stroke="#39FF14" 
+            fill="#F8FAFC" 
+            stroke="#16a34a" 
             strokeWidth="1.5" 
             className={isMoving ? 'animate-[truckRoll_0.5s_linear_infinite]' : ''}
           />
           {/* Front Wheel Hub lines */}
-          <line x1="25.5" y1="15" x2="25.5" y2="22" stroke="#39FF14" strokeWidth="1" className={isMoving ? 'origin-[25.5px_18.5px] animate-[truckRoll_0.5s_linear_infinite]' : ''} />
-          <line x1="22" y1="18.5" x2="29" y2="18.5" stroke="#39FF14" strokeWidth="1" className={isMoving ? 'origin-[25.5px_18.5px] animate-[truckRoll_0.5s_linear_infinite]' : ''} />
+          <line x1="25.5" y1="15" x2="25.5" y2="22" stroke="#16a34a" strokeWidth="1" className={isMoving ? 'origin-[25.5px_18.5px] animate-[truckRoll_0.5s_linear_infinite]' : ''} />
+          <line x1="22" y1="18.5" x2="29" y2="18.5" stroke="#16a34a" strokeWidth="1" className={isMoving ? 'origin-[25.5px_18.5px] animate-[truckRoll_0.5s_linear_infinite]' : ''} />
 
           {/* Rear Wheel */}
           <circle 
             cx="7.5" 
             cy="18.5" 
             r="3.5" 
-            fill="#050608" 
-            stroke="#39FF14" 
+            fill="#F8FAFC" 
+            stroke="#16a34a" 
             strokeWidth="1.5" 
             className={isMoving ? 'animate-[truckRoll_0.5s_linear_infinite]' : ''}
           />
           {/* Rear Wheel Hub lines */}
-          <line x1="7.5" y1="15" x2="7.5" y2="22" stroke="#39FF14" strokeWidth="1" className={isMoving ? 'origin-[7.5px_18.5px] animate-[truckRoll_0.5s_linear_infinite]' : ''} />
-          <line x1="4" y1="18.5" x2="11" y2="18.5" stroke="#39FF14" strokeWidth="1" className={isMoving ? 'origin-[7.5px_18.5px] animate-[truckRoll_0.5s_linear_infinite]' : ''} />
+          <line x1="7.5" y1="15" x2="7.5" y2="22" stroke="#16a34a" strokeWidth="1" className={isMoving ? 'origin-[7.5px_18.5px] animate-[truckRoll_0.5s_linear_infinite]' : ''} />
+          <line x1="4" y1="18.5" x2="11" y2="18.5" stroke="#16a34a" strokeWidth="1" className={isMoving ? 'origin-[7.5px_18.5px] animate-[truckRoll_0.5s_linear_infinite]' : ''} />
           
           {/* Rear Wheel 2 */}
           <circle 
             cx="14.5" 
             cy="18.5" 
             r="3.5" 
-            fill="#050608" 
-            stroke="#39FF14" 
+            fill="#F8FAFC" 
+            stroke="#16a34a" 
             strokeWidth="1.5" 
             className={isMoving ? 'animate-[truckRoll_0.5s_linear_infinite]' : ''}
           />
-          <line x1="14.5" y1="15" x2="14.5" y2="22" stroke="#39FF14" strokeWidth="1" className={isMoving ? 'origin-[14.5px_18.5px] animate-[truckRoll_0.5s_linear_infinite]' : ''} />
-          <line x1="11" y1="18.5" x2="18" y2="18.5" stroke="#39FF14" strokeWidth="1" className={isMoving ? 'origin-[14.5px_18.5px] animate-[truckRoll_0.5s_linear_infinite]' : ''} />
+          <line x1="14.5" y1="15" x2="14.5" y2="22" stroke="#16a34a" strokeWidth="1" className={isMoving ? 'origin-[14.5px_18.5px] animate-[truckRoll_0.5s_linear_infinite]' : ''} />
+          <line x1="11" y1="18.5" x2="18" y2="18.5" stroke="#16a34a" strokeWidth="1" className={isMoving ? 'origin-[14.5px_18.5px] animate-[truckRoll_0.5s_linear_infinite]' : ''} />
         </svg>
       </motion.div>
     </>

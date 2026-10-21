@@ -1,0 +1,8 @@
+{
+  "name": "Spatial Express",
+  "description": "Next-generation spatial logistics, freight forwarding, real-time shipment tracking, and automated courier rate comparison engine.",
+  "permissions": [],
+  "capabilities": [
+    "MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"
+  ]
+}

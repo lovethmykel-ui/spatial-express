@@ -15,15 +15,15 @@ const buttonClasses = (
   cn(
     'inline-flex items-center justify-center whitespace-nowrap rounded-md font-display font-semibold transition-all duration-200 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary disabled:pointer-events-none disabled:opacity-50 cursor-pointer active:scale-95',
     {
-      // Primary button: Neon Green to Forest Green with black text (high contrast)
-      'bg-gradient-to-r from-primary to-secondary text-black shadow-glow hover:shadow-strong hover:scale-[1.02] border-none':
+      // Primary button: Vibrant emerald with crisp white text
+      'bg-primary hover:bg-primary/90 text-white shadow-sm hover:shadow transition-all':
         variant === 'default',
-      // Outline: Thin border with neon-green text on hover
-      'border border-white/10 bg-transparent text-white hover:text-primary hover:border-primary/40 hover:bg-white/5': variant === 'outline',
-      // Ghost: Text secondary fading to primary on hover
-      'text-text-secondary hover:text-white hover:bg-white/5': variant === 'ghost',
-      // Glass: Glassmorphic panel style with green hover glow
-      'glass-panel text-white hover:bg-white/10 border border-white/10 hover:border-primary/20': variant === 'glass',
+      // Outline: Clean border with slate-800 text
+      'border border-slate-300 bg-white text-slate-800 hover:text-primary hover:border-primary/50 hover:bg-slate-50 shadow-sm': variant === 'outline',
+      // Ghost: Text slate-600 fading to slate-900 on hover
+      'text-slate-600 hover:text-slate-900 hover:bg-slate-100': variant === 'ghost',
+      // Glass: Clean light card button style
+      'glass-button text-slate-800 hover:bg-slate-100 border border-slate-200': variant === 'glass',
       
       // Sizes
       'h-10 px-5 py-2 text-sm': size === 'default',

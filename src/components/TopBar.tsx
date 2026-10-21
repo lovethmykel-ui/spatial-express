@@ -1,5 +1,5 @@
 import { useState, useRef, useEffect } from 'react'
-import { BellIcon, SearchIcon, UserIcon, ChevronDownIcon, CheckIcon, ShieldCheckIcon, HelpCircleIcon, PackageIcon, ArrowRightIcon, ShieldAlertIcon, GlobeIcon, SunIcon, MoonIcon } from './ui/CustomIcons'
+import { BellIcon, SearchIcon, UserIcon, ChevronDownIcon, CheckIcon, ShieldCheckIcon, HelpCircleIcon, PackageIcon, ArrowRightIcon, ShieldAlertIcon, GlobeIcon } from './ui/CustomIcons'
 import { useLogistics } from '../context/LogisticsContext'
 import { cn } from '../lib/utils'
 
@@ -14,9 +14,7 @@ export default function TopBar() {
     shipments,
     setSelectedTrackingId,
     currentUser,
-    setCurrentUser,
-    theme,
-    toggleTheme
+    setCurrentUser
   } = useLogistics()
 
   const [searchQuery, setSearchQuery] = useState('')
@@ -121,16 +119,16 @@ export default function TopBar() {
   const hasMatches = (searchMatches.shipments && searchMatches.shipments.length > 0) || (searchMatches.invoices && searchMatches.invoices.length > 0)
 
   return (
-    <header className="min-h-16 py-3 md:py-0 border-b border-white/5 bg-[#0D1117]/50 backdrop-blur-md flex flex-col md:flex-row items-start md:items-center justify-between px-4 md:px-6 z-30 select-none gap-3 md:gap-0">
+    <header className="min-h-16 py-3 md:py-0 border-b border-slate-200 bg-white/95 backdrop-blur-md flex flex-col md:flex-row items-start md:items-center justify-between px-4 md:px-6 z-30 select-none gap-3 md:gap-0 shadow-sm">
       
       {/* Dynamic Breadcrumbs */}
       <div className="flex flex-col text-left">
-        <div className="flex items-center gap-1.5 text-[10px] font-semibold text-muted uppercase tracking-wider">
+        <div className="flex items-center gap-1.5 text-[10px] font-semibold text-slate-500 uppercase tracking-wider">
           <span>{portalLabel}</span>
           <span>/</span>
           <span className="text-primary font-bold">{activePortal === 'admin' ? 'Operations' : 'Client'}</span>
         </div>
-        <h2 className="text-xs font-bold text-white tracking-wide mt-0.5">{viewLabel}</h2>
+        <h2 className="text-xs font-bold text-slate-900 tracking-wide mt-0.5">{viewLabel}</h2>
       </div>
 
       {/* Action Row */}
@@ -139,7 +137,7 @@ export default function TopBar() {
         {/* Global Search Bar */}
         <div ref={searchRef} className="relative flex-1 md:flex-none md:w-80">
           <div className="relative">
-            <SearchIcon className="absolute left-3 top-2.5 w-4 h-4 text-muted" />
+            <SearchIcon className="absolute left-3 top-2.5 w-4 h-4 text-slate-400" />
             <input
               ref={searchInputRef}
               type="text"
@@ -150,10 +148,10 @@ export default function TopBar() {
                 setShowSearchResults(true)
               }}
               onFocus={() => setShowSearchResults(true)}
-              className="w-full bg-[#050608]/80 text-xs text-white pl-9 pr-14 py-2.5 rounded-lg border border-white/5 focus:border-primary/40 focus:ring-1 focus:ring-primary/40 focus:outline-none transition-all placeholder:text-muted"
+              className="w-full bg-slate-50 text-xs text-slate-900 pl-9 pr-14 py-2.5 rounded-lg border border-slate-200 focus:bg-white focus:border-primary/50 focus:ring-1 focus:ring-primary/40 focus:outline-none transition-all placeholder:text-slate-400"
             />
             <div className="absolute right-2.5 top-2.5 flex items-center pointer-events-none">
-              <kbd className="text-[9px] font-mono bg-white/10 dark:bg-white/10 light:bg-slate-200 border border-white/10 text-muted px-1.5 py-0.5 rounded">
+              <kbd className="text-[9px] font-mono bg-slate-200 border border-slate-300 text-slate-600 px-1.5 py-0.5 rounded">
                 ⌘K
               </kbd>
             </div>
@@ -161,8 +159,8 @@ export default function TopBar() {
 
           {/* Search Result Dropdown */}
           {showSearchResults && searchQuery && (
-            <div className="absolute right-0 top-12 w-full glass-card border border-white/10 bg-[#0D1117]/95 rounded-lg overflow-hidden shadow-2xl p-2 z-50 text-left">
-              <p className="text-[10px] font-semibold text-muted px-3 py-1.5 border-b border-white/5 uppercase tracking-wider">Search Results</p>
+            <div className="absolute right-0 top-12 w-full glass-card border border-slate-200 bg-white rounded-lg overflow-hidden shadow-xl p-2 z-50 text-left">
+              <p className="text-[10px] font-semibold text-slate-500 px-3 py-1.5 border-b border-slate-100 uppercase tracking-wider">Search Results</p>
               
               <div className="max-h-60 overflow-y-auto py-1 custom-scrollbar">
                 {/* Shipments section */}
@@ -184,16 +182,16 @@ export default function TopBar() {
                           setShowSearchResults(false)
                           setSearchQuery('')
                         }}
-                        className="w-full text-left px-3 py-2 rounded-md hover:bg-white/5 flex items-center justify-between text-xs transition-colors cursor-pointer group"
+                        className="w-full text-left px-3 py-2 rounded-md hover:bg-slate-50 flex items-center justify-between text-xs transition-colors cursor-pointer group"
                       >
                         <div className="flex items-center gap-2">
                           <PackageIcon className="w-3.5 h-3.5 text-primary group-hover:scale-110 transition-transform" />
                           <div className="min-w-0">
-                            <p className="text-white font-bold truncate text-[11px]">{s.id}</p>
-                            <p className="text-muted text-[10px] truncate">{s.recipientName} ({s.destination})</p>
+                            <p className="text-slate-900 font-bold truncate text-[11px]">{s.id}</p>
+                            <p className="text-slate-500 text-[10px] truncate">{s.recipientName} ({s.destination})</p>
                           </div>
                         </div>
-                        <ArrowRightIcon className="w-3.5 h-3.5 text-muted group-hover:text-primary transition-colors" />
+                        <ArrowRightIcon className="w-3.5 h-3.5 text-slate-400 group-hover:text-primary transition-colors" />
                       </button>
                     ))}
                   </div>
@@ -202,7 +200,7 @@ export default function TopBar() {
                 {/* Invoices section */}
                 {searchMatches.invoices && searchMatches.invoices.length > 0 && (
                   <div>
-                    <p className="text-[9px] text-yellow-400 font-bold px-3 py-1 uppercase tracking-wider">Invoices</p>
+                    <p className="text-[9px] text-amber-600 font-bold px-3 py-1 uppercase tracking-wider">Invoices</p>
                     {searchMatches.invoices.map(s => (
                       <button
                         key={s.invoiceId}
@@ -216,38 +214,25 @@ export default function TopBar() {
                           setShowSearchResults(false)
                           setSearchQuery('')
                         }}
-                        className="w-full text-left px-3 py-2 rounded-md hover:bg-white/5 flex items-center justify-between text-xs transition-colors cursor-pointer group"
+                        className="w-full text-left px-3 py-2 rounded-md hover:bg-slate-50 flex items-center justify-between text-xs transition-colors cursor-pointer group"
                       >
                         <div>
-                          <p className="text-white font-bold text-[11px]">{s.invoiceId}</p>
-                          <p className="text-muted text-[10px]">Cost: {s.cost.toLocaleString()} NGN | {s.id}</p>
+                          <p className="text-slate-900 font-bold text-[11px]">{s.invoiceId}</p>
+                          <p className="text-slate-500 text-[10px]">Cost: {s.cost.toLocaleString()} NGN | {s.id}</p>
                         </div>
-                        <ArrowRightIcon className="w-3.5 h-3.5 text-muted group-hover:text-yellow-400 transition-colors" />
+                        <ArrowRightIcon className="w-3.5 h-3.5 text-slate-400 group-hover:text-amber-600 transition-colors" />
                       </button>
                     ))}
                   </div>
                 )}
 
                 {!hasMatches && (
-                  <p className="text-xs text-muted text-center py-6">No matches found for "{searchQuery}"</p>
+                  <p className="text-xs text-slate-500 text-center py-6">No matches found for "{searchQuery}"</p>
                 )}
               </div>
             </div>
           )}
         </div>
-
-        {/* Theme Toggle Button */}
-        <button
-          onClick={toggleTheme}
-          title={`Switch to ${theme === 'dark' ? 'Light' : 'Dark'} Mode`}
-          className="w-10 h-10 rounded-lg glass-button flex items-center justify-center cursor-pointer text-text-secondary hover:text-primary transition-colors shrink-0"
-        >
-          {theme === 'dark' ? (
-            <SunIcon className="w-4 h-4 text-warning" />
-          ) : (
-            <MoonIcon className="w-4 h-4 text-slate-700" />
-          )}
-        </button>
 
         {/* Real-time Notification Center */}
         <div ref={notificationRef} className="relative shrink-0">
@@ -256,9 +241,9 @@ export default function TopBar() {
               setShowNotifications(!showNotifications)
               setShowProfileMenu(false)
             }}
-            className="w-10 h-10 rounded-lg bg-[#050608]/80 hover:bg-white/5 border border-white/5 flex items-center justify-center relative cursor-pointer group transition-colors"
+            className="w-10 h-10 rounded-lg bg-slate-50 hover:bg-slate-100 border border-slate-200 flex items-center justify-center relative cursor-pointer group transition-colors shadow-sm"
           >
-            <BellIcon className="w-4 h-4 text-text-secondary group-hover:text-white transition-colors" />
+            <BellIcon className="w-4 h-4 text-slate-600 group-hover:text-slate-900 transition-colors" />
             {unreadCount > 0 && (
               <span className="absolute top-2 right-2 w-2 h-2 rounded-full bg-primary animate-pulse-glow" />
             )}
@@ -266,9 +251,9 @@ export default function TopBar() {
 
           {/* Notifications Dropdown */}
           {showNotifications && (
-            <div className="absolute right-0 top-12 w-80 glass-card border border-white/10 bg-[#0D1117]/95 rounded-lg overflow-hidden shadow-2xl p-2 z-50 text-left">
-              <div className="flex items-center justify-between px-3 py-2 border-b border-white/5">
-                <span className="text-[10px] font-bold text-white uppercase tracking-wider">Logistics Alerts</span>
+            <div className="absolute right-0 top-12 w-80 glass-card border border-slate-200 bg-white rounded-lg overflow-hidden shadow-xl p-2 z-50 text-left">
+              <div className="flex items-center justify-between px-3 py-2 border-b border-slate-100">
+                <span className="text-[10px] font-bold text-slate-900 uppercase tracking-wider">Logistics Alerts</span>
                 {unreadCount > 0 && (
                   <button 
                     onClick={() => {
@@ -286,8 +271,8 @@ export default function TopBar() {
                   <div
                     key={n.id}
                     className={cn(
-                      "p-3 rounded-md hover:bg-white/5 border-b border-white/[0.02] last:border-b-0 flex gap-2.5 transition-colors relative",
-                      !n.read && "bg-primary/[0.02]"
+                      "p-3 rounded-md hover:bg-slate-50 border-b border-slate-100 last:border-b-0 flex gap-2.5 transition-colors relative",
+                      !n.read && "bg-emerald-50/50"
                     )}
                   >
                     {!n.read && (
@@ -295,14 +280,14 @@ export default function TopBar() {
                     )}
                     <div className="mt-0.5">
                       {n.type === 'success' && <div className="w-2 h-2 rounded-full bg-primary" />}
-                      {n.type === 'warning' && <div className="w-2 h-2 rounded-full bg-warning" />}
-                      {n.type === 'danger' && <div className="w-2 h-2 rounded-full bg-danger" />}
-                      {n.type === 'info' && <div className="w-2 h-2 rounded-full bg-blue-400" />}
+                      {n.type === 'warning' && <div className="w-2 h-2 rounded-full bg-amber-500" />}
+                      {n.type === 'danger' && <div className="w-2 h-2 rounded-full bg-rose-500" />}
+                      {n.type === 'info' && <div className="w-2 h-2 rounded-full bg-blue-500" />}
                     </div>
                     <div>
-                      <p className="text-[11px] font-bold text-white leading-tight">{n.title}</p>
-                      <p className="text-[10px] text-muted leading-snug mt-0.5">{n.description}</p>
-                      <span className="text-[9px] text-muted/60 mt-1 block">{n.time}</span>
+                      <p className="text-[11px] font-bold text-slate-900 leading-tight">{n.title}</p>
+                      <p className="text-[10px] text-slate-500 leading-snug mt-0.5">{n.description}</p>
+                      <span className="text-[9px] text-slate-400 mt-1 block">{n.time}</span>
                     </div>
                   </div>
                 ))}
@@ -318,7 +303,7 @@ export default function TopBar() {
                   }
                   setShowNotifications(false)
                 }}
-                className="w-full text-center py-2 text-[10px] font-semibold text-muted hover:text-white border-t border-white/5 mt-1 block transition-colors"
+                className="w-full text-center py-2 text-[10px] font-semibold text-slate-500 hover:text-slate-900 border-t border-slate-100 mt-1 block transition-colors"
               >
                 View all notifications
               </button>
@@ -333,23 +318,23 @@ export default function TopBar() {
               setShowProfileMenu(!showProfileMenu)
               setShowNotifications(false)
             }}
-            className="flex items-center gap-2 p-1.5 rounded-lg bg-[#050608]/80 hover:bg-white/5 border border-white/5 text-left cursor-pointer transition-colors"
+            className="flex items-center gap-2 p-1.5 rounded-lg bg-slate-50 hover:bg-slate-100 border border-slate-200 text-left cursor-pointer transition-colors shadow-sm"
           >
-            <div className="w-7 h-7 rounded-md overflow-hidden bg-primary/20 flex items-center justify-center text-xs font-bold text-primary">
+            <div className="w-7 h-7 rounded-md overflow-hidden bg-primary/15 flex items-center justify-center text-xs font-bold text-primary">
               {currentUser ? currentUser.name.split(' ').map(n => n[0]).join('').substring(0, 2).toUpperCase() : (activePortal === 'admin' ? 'OP' : 'CO')}
             </div>
-            <span className="text-xs font-semibold text-text-secondary hidden md:inline-block">
+            <span className="text-xs font-semibold text-slate-700 hidden md:inline-block">
               {currentUser ? currentUser.name : (activePortal === 'admin' ? 'Operator' : 'Guest')}
             </span>
-            <ChevronDownIcon className="w-3.5 h-3.5 text-muted hidden md:inline-block" />
+            <ChevronDownIcon className="w-3.5 h-3.5 text-slate-400 hidden md:inline-block" />
           </button>
 
           {/* Profile Dropdown */}
           {showProfileMenu && (
-            <div className="absolute right-0 top-12 w-56 glass-card border border-white/10 bg-[#0D1117]/95 rounded-lg overflow-hidden shadow-2xl p-1.5 z-50 text-left">
-              <div className="px-3 py-2 border-b border-white/5">
-                <p className="text-xs font-bold text-white">Spatial Active Session</p>
-                <p className="text-[10px] text-muted mt-0.5 truncate">
+            <div className="absolute right-0 top-12 w-56 glass-card border border-slate-200 bg-white rounded-lg overflow-hidden shadow-xl p-1.5 z-50 text-left">
+              <div className="px-3 py-2 border-b border-slate-100">
+                <p className="text-xs font-bold text-slate-900">Spatial Active Session</p>
+                <p className="text-[10px] text-slate-500 mt-0.5 truncate">
                   {currentUser ? currentUser.email : (activePortal === 'admin' ? 'superadmin@spatialexpress.com' : 'guest@spatialexpress.com')}
                 </p>
               </div>
@@ -361,9 +346,9 @@ export default function TopBar() {
                     setActiveView('home')
                     setShowProfileMenu(false)
                   }}
-                  className="w-full text-left px-3 py-2 rounded-md hover:bg-white/5 text-xs text-text-secondary hover:text-white flex items-center gap-2 transition-colors cursor-pointer"
+                  className="w-full text-left px-3 py-2 rounded-md hover:bg-slate-50 text-xs text-slate-600 hover:text-slate-900 flex items-center gap-2 transition-colors cursor-pointer"
                 >
-                  <GlobeIcon className="w-3.5 h-3.5 text-muted" />
+                  <GlobeIcon className="w-3.5 h-3.5 text-slate-400" />
                   <span>Public Portal (Client Web)</span>
                 </button>
                 
@@ -373,9 +358,9 @@ export default function TopBar() {
                     setActiveView('dashboard')
                     setShowProfileMenu(false)
                   }}
-                  className="w-full text-left px-3 py-2 rounded-md hover:bg-white/5 text-xs text-text-secondary hover:text-white flex items-center gap-2 transition-colors cursor-pointer"
+                  className="w-full text-left px-3 py-2 rounded-md hover:bg-slate-50 text-xs text-slate-600 hover:text-slate-900 flex items-center gap-2 transition-colors cursor-pointer"
                 >
-                  <UserIcon className="w-3.5 h-3.5 text-muted" />
+                  <UserIcon className="w-3.5 h-3.5 text-slate-400" />
                   <span>Client Console (Dashboard)</span>
                 </button>
 
@@ -385,14 +370,14 @@ export default function TopBar() {
                     setActiveView('admin-overview')
                     setShowProfileMenu(false)
                   }}
-                  className="w-full text-left px-3 py-2 rounded-md hover:bg-white/5 text-xs text-text-secondary hover:text-white flex items-center gap-2 transition-colors cursor-pointer"
+                  className="w-full text-left px-3 py-2 rounded-md hover:bg-slate-50 text-xs text-slate-600 hover:text-slate-900 flex items-center gap-2 transition-colors cursor-pointer"
                 >
-                  <ShieldAlertIcon className="w-3.5 h-3.5 text-muted" />
+                  <ShieldAlertIcon className="w-3.5 h-3.5 text-slate-400" />
                   <span>Operator OS (Admin)</span>
                 </button>
               </div>
 
-              <div className="border-t border-white/5 pt-1 mt-1">
+              <div className="border-t border-slate-100 pt-1 mt-1">
                 <button
                   onClick={() => {
                     setCurrentUser(null)
@@ -400,7 +385,7 @@ export default function TopBar() {
                     setActiveView('home')
                     setShowProfileMenu(false)
                   }}
-                  className="w-full text-left px-3 py-2 rounded-md hover:bg-danger/10 text-xs text-muted hover:text-danger flex items-center gap-2 transition-colors cursor-pointer"
+                  className="w-full text-left px-3 py-2 rounded-md hover:bg-danger/10 text-xs text-slate-500 hover:text-danger flex items-center gap-2 transition-colors cursor-pointer"
                 >
                   <span>Logout Session</span>
                 </button>

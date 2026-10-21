@@ -71,7 +71,7 @@ export default function LoginModal({ isOpen, onClose }: LoginModalProps) {
             animate={{ opacity: 1 }}
             exit={{ opacity: 0 }}
             onClick={onClose}
-            className="absolute inset-0 bg-[#050608]/80 backdrop-blur-md"
+            className="absolute inset-0 bg-slate-900/40 backdrop-blur-xs"
           />
 
           {/* Modal Container */}
@@ -80,24 +80,24 @@ export default function LoginModal({ isOpen, onClose }: LoginModalProps) {
             animate={{ opacity: 1, scale: 1, y: 0 }}
             exit={{ opacity: 0, scale: 0.95, y: 20 }}
             transition={{ type: 'spring', stiffness: 300, damping: 25 }}
-            className="relative w-full max-w-md bg-[#0D1117]/90 liquid-glass border border-white/10 rounded-[32px] p-8 shadow-2xl overflow-hidden"
+            className="relative w-full max-w-md bg-white border border-slate-200/90 rounded-[28px] p-8 shadow-2xl overflow-hidden"
           >
             {/* Top right close button */}
             <button
               onClick={onClose}
-              className="absolute top-6 right-6 w-8 h-8 rounded-full bg-white/5 flex items-center justify-center hover:bg-white/10 transition-colors cursor-pointer z-10"
+              className="absolute top-6 right-6 w-8 h-8 rounded-full bg-slate-100 hover:bg-slate-200 flex items-center justify-center transition-colors cursor-pointer z-10 text-slate-500 hover:text-slate-900"
             >
-              <XIcon className="w-4 h-4 text-white/70 hover:text-white" />
+              <XIcon className="w-4 h-4" />
             </button>
 
             <div className="text-center mb-8 relative z-10">
-              <div className="w-16 h-16 rounded-full bg-primary/10 border border-primary/20 flex items-center justify-center mx-auto mb-4 shadow-[0_0_20px_rgba(57,255,20,0.15)]">
+              <div className="w-16 h-16 rounded-full bg-primary/10 border border-primary/20 flex items-center justify-center mx-auto mb-4 shadow-sm">
                 {showPuzzle ? <CheckCircleIcon className="w-8 h-8 text-primary" /> : <UserIcon className="w-8 h-8 text-primary" />}
               </div>
-              <h2 className="text-2xl font-black text-white font-display">
+              <h2 className="text-2xl font-black text-slate-900 font-display">
                 {showPuzzle ? 'Verification Required' : 'Secure Login'}
               </h2>
-              <p className="text-sm text-gray-400 mt-2">
+              <p className="text-sm text-slate-500 mt-2">
                 {showPuzzle ? 'Prove you are human to continue' : 'Enter your credentials to continue'}
               </p>
             </div>
@@ -109,7 +109,7 @@ export default function LoginModal({ isOpen, onClose }: LoginModalProps) {
             ) : (
               <form onSubmit={handleLogin} className="space-y-4 relative z-10">
                 <div className="space-y-1.5 text-left">
-                  <label className="text-[10px] font-bold text-muted uppercase tracking-wider font-display">Email Address</label>
+                  <label className="text-[10px] font-bold text-slate-600 uppercase tracking-wider font-display">Email Address</label>
                   <input
                     type="email"
                     required
@@ -119,12 +119,12 @@ export default function LoginModal({ isOpen, onClose }: LoginModalProps) {
                       setEmail(e.target.value)
                       setError('')
                     }}
-                    className="w-full bg-[#050608]/80 text-sm text-white px-4 py-3 rounded-xl border border-white/10 focus:outline-none focus:border-primary/45 focus:ring-1 focus:ring-primary/45 transition-all"
+                    className="w-full bg-slate-50 text-sm text-slate-900 px-4 py-3 rounded-xl border border-slate-200 focus:bg-white focus:outline-none focus:border-primary/50 focus:ring-1 focus:ring-primary/40 transition-all placeholder:text-slate-400"
                   />
                 </div>
 
                 <div className="space-y-1.5 text-left">
-                  <label className="text-[10px] font-bold text-muted uppercase tracking-wider font-display">Password</label>
+                  <label className="text-[10px] font-bold text-slate-600 uppercase tracking-wider font-display">Password</label>
                   <input
                     type="password"
                     required
@@ -134,7 +134,7 @@ export default function LoginModal({ isOpen, onClose }: LoginModalProps) {
                       setPassword(e.target.value)
                       setError('')
                     }}
-                    className="w-full bg-[#050608]/80 text-sm text-white px-4 py-3 rounded-xl border border-white/10 focus:outline-none focus:border-primary/45 focus:ring-1 focus:ring-primary/45 transition-all"
+                    className="w-full bg-slate-50 text-sm text-slate-900 px-4 py-3 rounded-xl border border-slate-200 focus:bg-white focus:outline-none focus:border-primary/50 focus:ring-1 focus:ring-primary/40 transition-all placeholder:text-slate-400"
                   />
                 </div>
 
@@ -148,8 +148,8 @@ export default function LoginModal({ isOpen, onClose }: LoginModalProps) {
                   type="submit"
                   disabled={isSubmitting}
                   className={cn(
-                    "w-full py-3.5 rounded-xl font-bold flex items-center justify-center gap-2 transition-all shadow-glow mt-4 cursor-pointer",
-                    isSubmitting ? "bg-white/10 text-white/50 cursor-not-allowed" : "bg-primary text-black hover:bg-primary-hover"
+                    "w-full py-3.5 rounded-xl font-bold flex items-center justify-center gap-2 transition-all mt-4 cursor-pointer shadow-sm",
+                    isSubmitting ? "bg-slate-100 text-slate-400 cursor-not-allowed" : "bg-primary text-white hover:bg-primary/90"
                   )}
                 >
                   {isSubmitting ? 'Authenticating...' : 'Sign In Securely'}
@@ -159,14 +159,10 @@ export default function LoginModal({ isOpen, onClose }: LoginModalProps) {
             )}
 
             {/* Demo Helper Links */}
-            <div className="mt-6 flex items-center justify-between text-[10px] text-muted relative z-10 border-t border-white/5 pt-4">
-              <p>Demo Customer: <br/><strong className="text-white">danny@example.com</strong></p>
-              <p className="text-right">Demo Admin: <br/><strong className="text-white">dora@sel.com</strong></p>
+            <div className="mt-6 flex items-center justify-between text-[10px] text-slate-500 relative z-10 border-t border-slate-100 pt-4">
+              <p>Demo Customer: <br/><strong className="text-slate-800">danny@example.com</strong></p>
+              <p className="text-right">Demo Admin: <br/><strong className="text-slate-800">dora@sel.com</strong></p>
             </div>
-
-            {/* Background Glow Effects */}
-            <div className="absolute top-0 right-0 w-64 h-64 bg-primary/10 rounded-full blur-[80px] pointer-events-none" />
-            <div className="absolute bottom-0 left-0 w-64 h-64 bg-danger/10 rounded-full blur-[80px] pointer-events-none" />
           </motion.div>
         </div>
       )}

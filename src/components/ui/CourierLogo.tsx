@@ -38,7 +38,7 @@ export function CourierLogo({ brand, className, size = 'md', withGlassContainer 
     return (
       <div 
         className={cn(
-          "flex items-center justify-center rounded-xl bg-white/5 backdrop-blur-md border border-white/10 shadow-[inset_0_1px_1px_rgba(255,255,255,0.1)]",
+          "flex items-center justify-center rounded-xl bg-slate-50 border border-slate-200 shadow-sm",
           sizeClasses[size],
           className
         )}

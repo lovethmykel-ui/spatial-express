@@ -196,26 +196,18 @@ const initialCountries: Country[] = [
 export const LogisticsContext = createContext<LogisticsContextType | undefined>(undefined)
 
 export function LogisticsProvider({ children }: { children: ReactNode }) {
-  // Theme State with localStorage persistence
-  const [theme, setTheme] = useState<'dark' | 'light'>(() => {
-    const saved = localStorage.getItem('spatial_express_theme')
-    if (saved === 'light' || saved === 'dark') return saved
-    return 'dark'
-  })
+  // Theme State - Light mode only
+  const [theme, setTheme] = useState<'dark' | 'light'>('light')
 
   useEffect(() => {
-    localStorage.setItem('spatial_express_theme', theme)
-    if (theme === 'light') {
-      document.documentElement.classList.add('light')
-      document.documentElement.classList.remove('dark')
-    } else {
-      document.documentElement.classList.add('dark')
-      document.documentElement.classList.remove('light')
-    }
-  }, [theme])
+    localStorage.setItem('spatial_express_theme', 'light')
+    document.documentElement.classList.add('light')
+    document.documentElement.classList.remove('dark')
+  }, [])
 
   const toggleTheme = () => {
-    setTheme(prev => prev === 'dark' ? 'light' : 'dark')
+    // Light mode only
+    setTheme('light')
   }
 
   // Navigation & Workspace

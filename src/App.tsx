@@ -10,11 +10,10 @@ import Footer from './components/Footer'
 import { Button } from './components/ui/Button'
 import { motion, AnimatePresence } from 'framer-motion'
 import LoginModal from './components/LoginModal'
-import { SunIcon, MoonIcon } from './components/ui/CustomIcons'
 import LiveActivityToast from './components/LiveActivityToast'
 
 export default function App() {
-  const { activePortal, activeView, setActiveView, theme, toggleTheme } = useLogistics()
+  const { activePortal, activeView, setActiveView } = useLogistics()
   const [isLoginModalOpen, setIsLoginModalOpen] = useState(false)
 
   const isPublic = activePortal === 'public'
@@ -27,34 +26,37 @@ export default function App() {
       {/* Live Social Proof Activity Toast */}
       {isPublic && <LiveActivityToast />}
 
-      {/* Cyber Ambient Lighting Effects */}
+      {/* Ambient Lighting Effects - Light Canvas */}
       <div className="fixed inset-0 pointer-events-none overflow-hidden z-0">
-        <div className="absolute -top-40 left-1/4 w-96 h-96 bg-primary/10 rounded-full blur-[140px]" />
-        <div className="absolute top-1/3 -right-40 w-96 h-96 bg-[#06B6D4]/10 rounded-full blur-[140px]" />
-        <div className="absolute -bottom-40 left-1/3 w-[500px] h-[500px] bg-secondary/10 rounded-full blur-[160px]" />
-        <div className="absolute inset-0 grid-bg opacity-40" />
+        <div className="absolute -top-40 left-1/4 w-96 h-96 bg-primary/[0.04] rounded-full blur-[140px]" />
+        <div className="absolute top-1/3 -right-40 w-96 h-96 bg-[#06B6D4]/[0.04] rounded-full blur-[140px]" />
+        <div className="absolute -bottom-40 left-1/3 w-[500px] h-[500px] bg-secondary/[0.03] rounded-full blur-[160px]" />
+        <div className="absolute inset-0 grid-bg opacity-60" />
       </div>
 
       {isPublic ? (
         /* PUBLIC PORTAL VIEWPORTS (Full-width custom layout) */
         <div className="flex-1 flex flex-col w-full relative z-10">
           
-          {/* Floating Premium Navbar */}
+          {/* Floating Premium Navbar adhering to 3-Zone Top Bar Contract */}
           <div className="fixed top-4 left-4 right-4 z-50 flex justify-center">
-            <header className="w-full max-w-7xl glass-nav rounded-2xl py-3 px-6 md:px-8 flex items-center justify-between border border-slate-200 dark:border-white/10 shadow-glass">
+            <header className="w-full max-w-7xl glass-nav rounded-2xl py-3 px-6 md:px-8 flex items-center justify-between gap-8 border border-slate-200/90 shadow-sm">
+              {/* Zone 1: Single text element Brand Wordmark */}
               <motion.div 
-                whileHover={{ scale: 1.02 }}
-                whileTap={{ scale: 0.98 }}
+                whileHover={{ scale: 1.01 }}
+                whileTap={{ scale: 0.99 }}
                 onClick={() => { setActiveView('home') }}
-                className="flex items-center gap-2 cursor-pointer group"
+                className="flex items-center gap-2.5 cursor-pointer shrink-0"
               >
-                <img src="/logo.png" alt="Logo" className="h-8 w-auto object-contain drop-shadow-md group-hover:brightness-110 transition-all" />
+                <img src="/logo.png" alt="Spatial Express Logo" className="h-7 w-auto object-contain" />
+                <span className="font-display font-bold text-base tracking-tight text-slate-900 whitespace-nowrap">
+                  Spatial Express
+                </span>
               </motion.div>
 
-              {/* Middle Nav Links */}
-              <nav className="hidden md:flex items-center gap-1 bg-slate-100 dark:bg-black/40 p-1.5 rounded-full border border-slate-200 dark:border-white/5 text-xs font-semibold text-text-secondary">
+              {/* Zone 2: 5 single-line clean navigation links */}
+              <nav className="hidden md:flex items-center gap-6 text-xs font-semibold text-slate-600">
                 {[
-                  { label: 'Home', view: 'home' },
                   { label: 'Services', view: 'services' },
                   { label: 'Rate Calculator', view: 'calculator' },
                   { label: 'Live Tracking', view: 'tracking' },
@@ -63,58 +65,43 @@ export default function App() {
                 ].map(link => {
                   const isActive = activeView === link.view
                   return (
-                    <motion.button
+                    <button
                       key={link.view}
-                      whileTap={{ scale: 0.95 }}
                       onClick={() => setActiveView(link.view)}
                       className={cn(
-                        "px-4 py-1.5 rounded-full transition-all duration-200 cursor-pointer relative",
-                        isActive ? "text-text font-bold" : "text-text-secondary hover:text-text hover:bg-white/5"
+                        "transition-colors duration-150 cursor-pointer whitespace-nowrap shrink-0 py-1 relative",
+                        isActive 
+                          ? "text-slate-900 font-bold" 
+                          : "text-slate-600 hover:text-slate-900"
                       )}
                     >
                       {link.label}
                       {isActive && (
                         <motion.div
-                          layoutId="active-desktop-pill"
-                          className="absolute inset-0 bg-white dark:bg-white/10 border border-slate-200 dark:border-white/15 rounded-full shadow-[inset_0_1px_0_rgba(255,255,255,0.2)] -z-10"
+                          layoutId="active-nav-underline"
+                          className="absolute bottom-0 left-0 right-0 h-0.5 bg-primary rounded-full"
                           transition={{ type: 'spring', stiffness: 400, damping: 30 }}
                         />
                       )}
-                    </motion.button>
+                    </button>
                   )
                 })}
               </nav>
 
-              {/* Action Buttons & Theme Switcher */}
-              <div className="hidden md:flex items-center gap-3">
-                {/* Theme Toggle Button */}
-                <motion.button
-                  whileHover={{ scale: 1.05 }}
-                  whileTap={{ scale: 0.95 }}
-                  onClick={toggleTheme}
-                  title={`Switch to ${theme === 'dark' ? 'Light' : 'Dark'} Mode`}
-                  className="w-9 h-9 rounded-xl glass-button flex items-center justify-center cursor-pointer text-text-secondary hover:text-primary transition-colors"
-                >
-                  {theme === 'dark' ? (
-                    <SunIcon className="w-4 h-4 text-warning" />
-                  ) : (
-                    <MoonIcon className="w-4 h-4 text-slate-700" />
-                  )}
-                </motion.button>
-
-                <motion.button 
-                  whileTap={{ scale: 0.95 }}
+              {/* Zone 3: 1 primary action */}
+              <div className="hidden md:flex items-center gap-3 shrink-0">
+                <button 
                   onClick={() => setIsLoginModalOpen(true)}
-                  className="text-xs font-bold text-text-secondary hover:text-text px-4 py-2 transition-all cursor-pointer rounded-xl hover:bg-white/5"
+                  className="text-xs font-semibold text-slate-600 hover:text-slate-900 px-3 py-2 transition-colors cursor-pointer whitespace-nowrap"
                 >
-                  Client Portal
-                </motion.button>
+                  Client Console
+                </button>
                 <Button 
                   onClick={() => {
                     setActiveView('calculator')
                   }}
                   size="sm" 
-                  className="text-xs font-bold px-5 py-2 cursor-pointer shadow-glow hover:shadow-glow-strong transition-all"
+                  className="text-xs font-bold px-4 py-2 cursor-pointer shadow-sm hover:shadow transition-all bg-primary hover:bg-emerald-700 text-white whitespace-nowrap rounded-lg"
                 >
                   Get Instant Quote
                 </Button>
